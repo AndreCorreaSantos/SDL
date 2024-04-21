@@ -1,0 +1,27 @@
+#in vec3 pos, out SignedDistance, out Color,
+
+sqrt(float x){
+    return x**0.5
+}
+
+length(vec3 v){
+    return sqrt(v.x*v.x + v.y*v.y + v.z*v.z)
+}
+
+SignedDistance(vec3 pos){
+    vec3 center = vec3(0.0,0.0,0.0)
+    float radius = 5.0
+    return length(p - center) - radius
+}
+
+Color(vec3 pos){
+    float r = 1.0f
+    float g = 1.0f
+    float b
+    float a
+    b = pos.x
+    a = pos.y
+    return vec4(r,g,b,a)
+}
+
+
