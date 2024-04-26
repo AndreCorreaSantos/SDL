@@ -24,4 +24,4 @@ PROPERTY = ('x',('y',('z',('w',|) |) | ) ) | ;
 INT =  DIGIT, { DIGIT };
 FLOAT = INT,'.',INT;
 LETTER = ( "a" | "..." | "z" | "A" | "..." | "Z" );
-FUNCTION_CALL = IDENTIFIER,'(',{IDENTIFIER},',',')';
+FUNCTION_CALL = IDENTIFIER,'(',{IDENTIFIER,','},')';

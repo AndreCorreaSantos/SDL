@@ -76,7 +76,7 @@ length(vec3 v){
 SignedDistance(vec3 pos){
     vec3 center = vec3(0.0,0.0,0.0)
     float radius = 5.0
-    return length(p - center) - radius
+    return length(pos - center) - radius
 }
 
 Color(vec3 pos){
@@ -95,7 +95,6 @@ The expected output for the above code in SDL is a sphere of radius 5.0 centered
 ![alt text](canvas.png)
 
 Full code in glsl that is needed to render the above sphere and that is being abstracted to SDL can be seen here:
-
 
 https://www.shadertoy.com/view/MfcSz8
 
@@ -132,6 +131,7 @@ FLOAT = INT,'.',INT;
 LETTER = ( "a" | "..." | "z" | "A" | "..." | "Z" );
 FUNCTION_CALL = IDENTIFIER,'(',{IDENTIFIER},',',')';
 ```
+
 and its diagram can be seen here:
 
 ![1713724030422](image/readme/1713724030422.png)
