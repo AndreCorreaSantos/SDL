@@ -74,16 +74,16 @@ length(vec3 v){
 }
 
 SignedDistance(vec3 pos){
-    vec3 center = vec3(0.0,0.0,0.0)
-    float radius = 5.0
+    local center = vec3(0.0,0.0,0.0)
+    local radius = 5.0
     return length(pos - center) - radius
 }
 
 Color(vec3 pos){
-    float r = 1.0
-    float g = 0.0
-    float b = 0.0
-    float a = 0.0
+    local r = 1.0
+    local g = 0.0
+    local b = 0.0
+    local a = 0.0
     return vec4(r,g,b,a)
 }
 ```
@@ -114,7 +114,7 @@ STATEMENT = ( "λ" | ASSIGNMENT |DECLARATION|WHILE | IF ), "\n" ;
 WHILE = "while", BOOL_EXP, "do", "\n", "λ", { ( STATEMENT ), "λ" }, "end";
 IF = "if", BOOL_EXP, "then", "\n", "λ", { ( STATEMENT ), "λ" }, ( "λ" | ( "else", "\n", "λ", { ( STATEMENT ), "λ" })), "end" ;
 ASSIGNMENT = IDENTIFIER, '=', BOOL_EXP;
-DECLARATION = TYPE, IDENTIFIER,('=', BOOL_EXP | );
+DECLARATION = 'local', IDENTIFIER,('=', BOOL_EXP | );
 BOOL_EXP = BOOL_TERM, { ("or"), BOOL_TERM } ;
 BOOL_TERM = REL_EXP, { ("and"), REL_EXP } ;
 REL_EXP = EXPRESSION, { ("==" | ">" | "<"), EXPRESSION } ;
@@ -129,7 +129,7 @@ PROPERTY = ('x',('y',('z',('w',|) |) | ) ) | ;
 INT =  DIGIT, { DIGIT };
 FLOAT = INT,'.',INT;
 LETTER = ( "a" | "..." | "z" | "A" | "..." | "Z" );
-FUNCTION_CALL = IDENTIFIER,'(',{IDENTIFIER},',',')';
+FUNCTION_CALL = IDENTIFIER,'(',{IDENTIFIER,','},')';
 ```
 
 and its diagram can be seen here:

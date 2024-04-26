@@ -9,7 +9,7 @@ STATEMENT = ( "λ" | ASSIGNMENT |DECLARATION|WHILE | IF ), "\n" ;
 WHILE = "while", BOOL_EXP, "do", "\n", "λ", { ( STATEMENT ), "λ" }, "end";
 IF = "if", BOOL_EXP, "then", "\n", "λ", { ( STATEMENT ), "λ" }, ( "λ" | ( "else", "\n", "λ", { ( STATEMENT ), "λ" })), "end" ;
 ASSIGNMENT = IDENTIFIER, '=', BOOL_EXP;
-DECLARATION = TYPE, IDENTIFIER,('=', BOOL_EXP | );
+DECLARATION = 'local', IDENTIFIER,('=', BOOL_EXP | );
 BOOL_EXP = BOOL_TERM, { ("or"), BOOL_TERM } ;
 BOOL_TERM = REL_EXP, { ("and"), REL_EXP } ;
 REL_EXP = EXPRESSION, { ("==" | ">" | "<"), EXPRESSION } ;
