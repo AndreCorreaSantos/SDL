@@ -6,7 +6,7 @@ lexer = lg.build()
 pg = ParserGenerator([
     'PROGRAM_START', 'IN', 'OUT', 'TYPE', 'IDENTIFIER', 'INT', 'FLOAT', 'COMMA', 'LPAREN', 'RPAREN', 'EQUALS', 
     'GREATER', 'LESS', 'PLUS', 'MINUS', 'MULTIPLY', 'DIVIDE', 'ASSIGN', 'FUNC', 'LBRACE', 'RBRACE', 'LOCAL', 
-    'WHILE', 'IF', 'THEN', 'ELSE', 'END', 'AND', 'OR', 'NOT', 'NEWLINE', 'POWER','DO'
+    'WHILE', 'IF', 'THEN', 'ELSE', 'END', 'AND', 'OR', 'NOT', 'NEWLINE', 'POWER','DO', 'RETURN', 'BOOL'
 ])
 
 # Program definition
@@ -40,9 +40,14 @@ def function(p):
 def func_args(p):
     print(p)
 
-@pg.production("func_call_args : IDENTIFIER COMMA func_call_args | IDENTIFIER | ")
+@pg.production("func_call_args : fcall_types COMMA func_call_args | fcall_types | ")
 def func_call_args(p):
     print(p)
+
+@pg.production("fcall_types : INT | IDENTIFIER | FLOAT | BOOL ")
+def fcall_types(p):
+    pass
+
 
 @pg.production("func_arg : TYPE IDENTIFIER")
 def func_arg(p):
@@ -55,7 +60,7 @@ def block(p):
     pass
 
 # Statement types
-@pg.production("statement : assignment_statement newlines | declaration_statement newlines | while_statement newlines | if_statement newlines ")
+@pg.production("statement : assignment_statement newlines | declaration_statement newlines | while_statement newlines | if_statement newlines | return_statement newlines")
 def statement(p):
     pass
 
@@ -64,6 +69,10 @@ def statement(p):
 def assignment_statement(p):
     pass
 
+# Return statement
+@pg.production("return_statement : RETURN bool_exp")
+def return_statement(p):
+    pass
 # Declaration statement
 @pg.production("declaration_statement : LOCAL IDENTIFIER")
 def declaration_statement(p):
@@ -102,9 +111,11 @@ def term(p):
     pass
 
 
-@pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call | PLUS factor | MINUS factor | NOT factor")
+@pg.production("factor : INT | FLOAT | vectors | IDENTIFIER | LPAREN expression RPAREN | function_call | PLUS factor | MINUS factor | NOT factor")
 def factor(p):
     pass
+
+@pg.production("vectors : TYPE LPAREN func_call_args RPAREN")
 
 @pg.production("function_call : IDENTIFIER LPAREN func_call_args RPAREN")
 def function_call(p):
@@ -120,7 +131,10 @@ def teste(){
 
 while teste do
 local u
+u = vec3(1.0,1.0)
 end
+
+return teste
 }
 """
 
