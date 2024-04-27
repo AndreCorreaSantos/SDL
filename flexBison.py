@@ -30,14 +30,13 @@ def program_args(p):
     print(p)
 
 # Function definition
-# @pg.production("function : FUNC IDENTIFIER LPAREN func_args RPAREN LBRACE block RBRACE")
-@pg.production("function : FUNC IDENTIFIER LPAREN func_args RPAREN LBRACE RBRACE")
+@pg.production("function : FUNC IDENTIFIER LPAREN func_args RPAREN LBRACE block RBRACE")
 def function(p):
     print(p)
 
 @pg.production("func_args : func_arg COMMA func_args")
 @pg.production("func_args : func_arg")
-@pg.production("func_args :")
+@pg.production("func_args : ")
 def func_args(p):
     print(p)
 
@@ -45,30 +44,30 @@ def func_args(p):
 def func_arg(p):
     print(p)
 
-# # Block definition
-# @pg.production("block : statement NEWLINE block")
-# @pg.production("block : statement")
-# def block(p):
-#     pass
+# Block definition
+@pg.production("block : multiple_newlines statement")
+@pg.production("block : ")
+def block(p):
+    pass
 
-# # Statement types
-# @pg.production("statement : assignment_statement")
-# @pg.production("statement : declaration_statement")
+# Statement types
+# @pg.production("statement : assignment_statement ")
+@pg.production("statement : declaration_statement multiple_newlines")
 # @pg.production("statement : while_statement")
 # @pg.production("statement : if_statement")
-# def statement(p):
-#     pass
+def statement(p):
+    pass
 
 # # Assignment statement
 # @pg.production("assignment_statement : IDENTIFIER ASSIGN bool_exp")
 # def assignment_statement(p):
 #     pass
 
-# # Declaration statement
+# Declaration statement
 # @pg.production("declaration_statement : LOCAL IDENTIFIER ASSIGN bool_exp")
-# @pg.production("declaration_statement : LOCAL IDENTIFIER")
-# def declaration_statement(p):
-#     pass
+@pg.production("declaration_statement : LOCAL IDENTIFIER")
+def declaration_statement(p):
+    pass
 
 # # While statement
 # @pg.production("while_statement : WHILE bool_exp NEWLINE block END")
@@ -117,7 +116,11 @@ parser = pg.build()
 # Example input
 input_string = """#out vec3 teste, in vec2 testando
 
-def teste(){}
+def teste(){
+
+local teste
+
+}
 """
 
 # Parse and process tokens

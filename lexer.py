@@ -44,8 +44,10 @@ if __name__ == '__main__':
     lexer = lg.build()
 
     input_string = """
-    def teste(){}
-    """
+def teste(){
+local x
+}
+"""
 
     tokens = lexer.lex(input_string)
 
