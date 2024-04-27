@@ -40,6 +40,10 @@ def function(p):
 def func_args(p):
     print(p)
 
+@pg.production("func_call_args : IDENTIFIER COMMA func_call_args | IDENTIFIER | ")
+def func_call_args(p):
+    print(p)
+
 @pg.production("func_arg : TYPE IDENTIFIER")
 def func_arg(p):
     print(p)
@@ -102,13 +106,13 @@ def declaration_statement(p):
 
 # @pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call")
 # @pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call")
-@pg.production("factor : INT | FLOAT | IDENTIFIER ")
+@pg.production("factor : INT | FLOAT | IDENTIFIER | function_call")
 def factor(p):
     pass
 
-# @pg.production("function_call : IDENTIFIER LPAREN RPAREN")
-# def function_call(p):
-#     pass
+@pg.production("function_call : IDENTIFIER LPAREN func_call_args RPAREN")
+def function_call(p):
+    pass
 
 parser = pg.build()
 
@@ -118,7 +122,7 @@ input_string = """
 
 def teste(){
 
-testando = 1
+testando = teste(teste1,teste2)
 
 }
 """
