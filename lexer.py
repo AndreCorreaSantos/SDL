@@ -10,6 +10,7 @@ lg.add('LOCAL', r'local')  # nao sei se isso esta correto, checar depois
 lg.add('WHILE', r'while')
 lg.add('IF', r'if')
 lg.add('THEN', r'then')
+lg.add('DO', r'do')
 lg.add('ELSE', r'else')
 lg.add('END', r'end')
 lg.add('TYPE', r'(float|int|vec4|vec3|vec2|bool)')
@@ -48,8 +49,11 @@ if __name__ == '__main__':
 
 def teste(){
 
-local teste
-testando = 1
+teste = 1 > 2
+
+while teste do
+local u
+end
 
 }
 """

@@ -6,7 +6,7 @@ lexer = lg.build()
 pg = ParserGenerator([
     'PROGRAM_START', 'IN', 'OUT', 'TYPE', 'IDENTIFIER', 'INT', 'FLOAT', 'COMMA', 'LPAREN', 'RPAREN', 'EQUALS', 
     'GREATER', 'LESS', 'PLUS', 'MINUS', 'MULTIPLY', 'DIVIDE', 'ASSIGN', 'FUNC', 'LBRACE', 'RBRACE', 'LOCAL', 
-    'WHILE', 'IF', 'THEN', 'ELSE', 'END', 'AND', 'OR', 'NOT', 'NEWLINE', 'POWER'
+    'WHILE', 'IF', 'THEN', 'ELSE', 'END', 'AND', 'OR', 'NOT', 'NEWLINE', 'POWER','DO'
 ])
 
 # Program definition
@@ -55,9 +55,7 @@ def block(p):
     pass
 
 # Statement types
-@pg.production("statement : assignment_statement newlines | declaration_statement newlines ")
-# @pg.production("statement : while_statement")
-# @pg.production("statement : if_statement")
+@pg.production("statement : assignment_statement newlines | declaration_statement newlines | while_statement newlines | if_statement newlines ")
 def statement(p):
     pass
 
@@ -71,16 +69,15 @@ def assignment_statement(p):
 def declaration_statement(p):
     pass
 
-# # While statement
-# @pg.production("while_statement : WHILE bool_exp NEWLINE block END")
-# def while_statement(p):
-#     pass
+# While statement
+@pg.production("while_statement : WHILE bool_exp DO block END")
+def while_statement(p):
+    pass
 
-# # If statement
-# @pg.production("if_statement : IF bool_exp NEWLINE block THEN statement END")
-# @pg.production("if_statement : IF bool_exp NEWLINE block THEN statement ELSE NEWLINE statement END")
-# def if_statement(p):
-#     pass
+# If statement
+@pg.production("if_statement : IF bool_exp THEN block END | IF bool_exp THEN block ELSE block END")
+def if_statement(p):
+    pass
 
 # Boolean expressions
 @pg.production("bool_exp : bool_term OR bool_term | bool_term")
@@ -121,8 +118,9 @@ input_string = """
 
 def teste(){
 
-testando = (1+2)
-
+while teste do
+local u
+end
 }
 """
 
