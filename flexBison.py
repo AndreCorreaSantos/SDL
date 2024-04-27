@@ -10,17 +10,17 @@ pg = ParserGenerator([
 ])
 
 # Program definition
-@pg.production("program : PROGRAM_START program_args functions")
+@pg.production("program : newlines PROGRAM_START program_args functions")
 def program(p):
     print(p)
 
-@pg.production("functions : multiple_newlines functions | function functions | function | ")
+@pg.production("functions : newlines functions | function functions | function | ")
 def functions(p):
     print(p)
 
-@pg.production("multiple_newlines : NEWLINE multiple_newlines | NEWLINE")
-@pg.production("multiple_newlines :")
-def multiple_newlines(p):
+@pg.production("newlines : NEWLINE newlines | NEWLINE")
+@pg.production("newlines : ")
+def newlines(p):
     print(p)
 
 # Program arguments
@@ -45,23 +45,22 @@ def func_arg(p):
     print(p)
 
 # Block definition
-@pg.production("block : multiple_newlines statement")
+@pg.production("block : newlines statement block")
 @pg.production("block : ")
 def block(p):
     pass
 
 # Statement types
-# @pg.production("statement : assignment_statement ")
-@pg.production("statement : declaration_statement multiple_newlines")
+@pg.production("statement : assignment_statement newlines | declaration_statement newlines")
 # @pg.production("statement : while_statement")
 # @pg.production("statement : if_statement")
 def statement(p):
     pass
 
-# # Assignment statement
-# @pg.production("assignment_statement : IDENTIFIER ASSIGN bool_exp")
-# def assignment_statement(p):
-#     pass
+# Assignment statement
+@pg.production("assignment_statement : IDENTIFIER ASSIGN")
+def assignment_statement(p):
+    pass
 
 # Declaration statement
 # @pg.production("declaration_statement : LOCAL IDENTIFIER ASSIGN bool_exp")
@@ -114,11 +113,13 @@ def declaration_statement(p):
 parser = pg.build()
 
 # Example input
-input_string = """#out vec3 teste, in vec2 testando
+input_string = """
+#out vec3 teste, in vec2 testando
 
 def teste(){
 
 local teste
+testando = 
 
 }
 """

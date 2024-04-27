@@ -44,8 +44,13 @@ if __name__ == '__main__':
     lexer = lg.build()
 
     input_string = """
+#out vec3 teste, in vec2 testando
+
 def teste(){
-local x
+
+local teste
+teste =
+
 }
 """
 
