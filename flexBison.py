@@ -62,12 +62,12 @@ def statement(p):
     pass
 
 # Assignment statement
-@pg.production("assignment_statement : IDENTIFIER ASSIGN factor")
+@pg.production("assignment_statement : IDENTIFIER ASSIGN bool_exp")
 def assignment_statement(p):
     pass
 
 # Declaration statement
-@pg.production("declaration_statement : LOCAL IDENTIFIER ASSIGN factor")
+@pg.production("declaration_statement : LOCAL IDENTIFIER")
 def declaration_statement(p):
     pass
 
@@ -83,30 +83,29 @@ def declaration_statement(p):
 #     pass
 
 # Boolean expressions
-# @pg.production("bool_exp : bool_term OR bool_term | bool_term")
-# def bool_exp(p):
-#     pass
+@pg.production("bool_exp : bool_term OR bool_term | bool_term")
+def bool_exp(p):
+    pass
 
-# @pg.production("bool_term : rel_exp AND rel_exp | rel_exp")
-# def bool_term(p):
-#     pass
+@pg.production("bool_term : rel_exp AND rel_exp | rel_exp")
+def bool_term(p):
+    pass
 
-# @pg.production("rel_exp : expression EQUALS expression | expression GREATER expression | expression LESS expression | expression")
-# def rel_exp(p):
-#     pass
+@pg.production("rel_exp : expression EQUALS expression | expression GREATER expression | expression LESS expression | expression")
+def rel_exp(p):
+    pass
 
-# @pg.production("expression : term PLUS term | term MINUS term | term POWER term | term")
-# def expression(p):
-#     pass
+@pg.production("expression : term PLUS term | term MINUS term | term POWER term | term")
+def expression(p):
+    pass
 
-# # Term structure
-# @pg.production("term : factor MULTIPLY factor | term DIVIDE factor | factor")
-# def term(p):
-#     pass
+# Term structure
+@pg.production("term : factor MULTIPLY factor | term DIVIDE factor | factor")
+def term(p):
+    pass
 
-# @pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call")
-# @pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call")
-@pg.production("factor : INT | FLOAT | IDENTIFIER | function_call")
+
+@pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call | PLUS factor | MINUS factor | NOT factor")
 def factor(p):
     pass
 
@@ -122,7 +121,7 @@ input_string = """
 
 def teste(){
 
-testando = teste(teste1,teste2)
+testando = (1+2)
 
 }
 """
