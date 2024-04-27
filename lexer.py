@@ -49,7 +49,7 @@ if __name__ == '__main__':
 def teste(){
 
 local teste
-teste =
+testando = 1
 
 }
 """

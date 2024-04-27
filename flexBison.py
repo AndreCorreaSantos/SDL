@@ -51,20 +51,19 @@ def block(p):
     pass
 
 # Statement types
-@pg.production("statement : assignment_statement newlines | declaration_statement newlines")
+@pg.production("statement : assignment_statement newlines | declaration_statement newlines ")
 # @pg.production("statement : while_statement")
 # @pg.production("statement : if_statement")
 def statement(p):
     pass
 
 # Assignment statement
-@pg.production("assignment_statement : IDENTIFIER ASSIGN")
+@pg.production("assignment_statement : IDENTIFIER ASSIGN factor")
 def assignment_statement(p):
     pass
 
 # Declaration statement
-# @pg.production("declaration_statement : LOCAL IDENTIFIER ASSIGN bool_exp")
-@pg.production("declaration_statement : LOCAL IDENTIFIER")
+@pg.production("declaration_statement : LOCAL IDENTIFIER ASSIGN factor")
 def declaration_statement(p):
     pass
 
@@ -79,7 +78,7 @@ def declaration_statement(p):
 # def if_statement(p):
 #     pass
 
-# # Boolean expressions
+# Boolean expressions
 # @pg.production("bool_exp : bool_term OR bool_term | bool_term")
 # def bool_exp(p):
 #     pass
@@ -88,23 +87,24 @@ def declaration_statement(p):
 # def bool_term(p):
 #     pass
 
-# @pg.production("rel_exp : expression EQUALS expression | expression GREATER expression | expression LESS expression")
+# @pg.production("rel_exp : expression EQUALS expression | expression GREATER expression | expression LESS expression | expression")
 # def rel_exp(p):
 #     pass
 
-# @pg.production("expression : term PLUS term | term MINUS term | term POWER term")
+# @pg.production("expression : term PLUS term | term MINUS term | term POWER term | term")
 # def expression(p):
 #     pass
 
 # # Term structure
 # @pg.production("term : factor MULTIPLY factor | term DIVIDE factor | factor")
-# @pg.production("term : factor")
 # def term(p):
 #     pass
 
 # @pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call")
-# def factor(p):
-#     pass
+# @pg.production("factor : INT | FLOAT | IDENTIFIER | LPAREN expression RPAREN | function_call")
+@pg.production("factor : INT | FLOAT | IDENTIFIER ")
+def factor(p):
+    pass
 
 # @pg.production("function_call : IDENTIFIER LPAREN RPAREN")
 # def function_call(p):
@@ -118,8 +118,7 @@ input_string = """
 
 def teste(){
 
-local teste
-testando = 
+testando = 1
 
 }
 """
