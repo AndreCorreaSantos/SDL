@@ -67,14 +67,14 @@
 
 
 /* First part of user prologue.  */
-#line 1 "sdl.y"
+#line 1 "src/sdl.y"
 
 #include <stdio.h>
 
 int yylex(void);
 void yyerror(char *s);
 
-#line 78 "sdl.tab.c"
+#line 78 "src/sdl.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -1203,7 +1203,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1207 "sdl.tab.c"
+#line 1207 "src/sdl.tab.c"
 
       default: break;
     }
@@ -1396,7 +1396,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 162 "sdl.y"
+#line 162 "src/sdl.y"
 
 
 int main(int argc, char *argv[]) {

@@ -1,5 +1,6 @@
+#line 2 "src/lex.yy.c"
 
-#line 3 "lex.yy.c"
+#line 4 "src/lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -503,11 +504,11 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "sdl.lex"
-#line 2 "sdl.lex"
+#line 1 "src/sdl.lex"
+#line 2 "src/sdl.lex"
 #include "sdl.tab.h"
-#line 510 "lex.yy.c"
-#line 511 "lex.yy.c"
+#line 511 "src/lex.yy.c"
+#line 512 "src/lex.yy.c"
 
 #define INITIAL 0
 
@@ -724,10 +725,10 @@ YY_DECL
 		}
 
 	{
-#line 13 "sdl.lex"
+#line 13 "src/sdl.lex"
 
 
-#line 731 "lex.yy.c"
+#line 732 "src/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -787,190 +788,190 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 15 "sdl.lex"
+#line 15 "src/sdl.lex"
 ;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 "sdl.lex"
+#line 16 "src/sdl.lex"
 { return PROGRAM_START; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "sdl.lex"
+#line 17 "src/sdl.lex"
 { return IN; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 "sdl.lex"
+#line 18 "src/sdl.lex"
 { return OUT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 "sdl.lex"
+#line 19 "src/sdl.lex"
 { return FUNC; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "sdl.lex"
+#line 20 "src/sdl.lex"
 { return LOCAL; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "sdl.lex"
+#line 21 "src/sdl.lex"
 { return WHILE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "sdl.lex"
+#line 22 "src/sdl.lex"
 { return IF; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "sdl.lex"
+#line 23 "src/sdl.lex"
 { return THEN; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "sdl.lex"
+#line 24 "src/sdl.lex"
 { return ELSE; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "sdl.lex"
+#line 25 "src/sdl.lex"
 { return END; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "sdl.lex"
+#line 26 "src/sdl.lex"
 { return AND; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 27 "sdl.lex"
+#line 27 "src/sdl.lex"
 { return OR; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 28 "sdl.lex"
+#line 28 "src/sdl.lex"
 { return NOT; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 29 "sdl.lex"
+#line 29 "src/sdl.lex"
 { return DO; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 30 "sdl.lex"
+#line 30 "src/sdl.lex"
 { return RETURN; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 31 "sdl.lex"
+#line 31 "src/sdl.lex"
 { return PLUS; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 32 "sdl.lex"
+#line 32 "src/sdl.lex"
 { return MINUS; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 33 "sdl.lex"
+#line 33 "src/sdl.lex"
 { return MULTIPLY; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 34 "sdl.lex"
+#line 34 "src/sdl.lex"
 { return POWER; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 35 "sdl.lex"
+#line 35 "src/sdl.lex"
 { return DIVIDE; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 36 "sdl.lex"
+#line 36 "src/sdl.lex"
 { return ASSIGN; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 37 "sdl.lex"
+#line 37 "src/sdl.lex"
 { return EQUALS; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 38 "sdl.lex"
+#line 38 "src/sdl.lex"
 { return GREATER; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 39 "sdl.lex"
+#line 39 "src/sdl.lex"
 { return LESS; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 40 "sdl.lex"
+#line 40 "src/sdl.lex"
 { return LBRACE; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 41 "sdl.lex"
+#line 41 "src/sdl.lex"
 { return RBRACE; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 42 "sdl.lex"
+#line 42 "src/sdl.lex"
 { return LPAREN; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 43 "sdl.lex"
+#line 43 "src/sdl.lex"
 { return RPAREN; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 44 "sdl.lex"
+#line 44 "src/sdl.lex"
 { return COMMA; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 45 "sdl.lex"
+#line 45 "src/sdl.lex"
 { return TYPE; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 46 "sdl.lex"
+#line 46 "src/sdl.lex"
 { return BOOL; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 47 "sdl.lex"
+#line 47 "src/sdl.lex"
 { return IDENTIFIER; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 48 "sdl.lex"
+#line 48 "src/sdl.lex"
 { return FLOAT; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 49 "sdl.lex"
+#line 49 "src/sdl.lex"
 { return PROPERTY; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 50 "sdl.lex"
+#line 50 "src/sdl.lex"
 { return NEWLINE; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 52 "sdl.lex"
+#line 52 "src/sdl.lex"
 ECHO;
 	YY_BREAK
-#line 974 "lex.yy.c"
+#line 975 "src/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1975,6 +1976,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 52 "sdl.lex"
+#line 52 "src/sdl.lex"
 
 
