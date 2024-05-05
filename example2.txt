@@ -1,9 +1,9 @@
-# in vec3 pos, out func SignedDistance, out func Color,
+# in vec3 pos, out func SignedDistance, out func Color
 
-func SignedDistance(vec3 pos){
-    return 0.0
+def SignedDistance(vec3 pos){
+    return
 }
 
-func Color(vec3 pos){
-    return 0.0
+def Color(vec3 pos){
+    return
 }

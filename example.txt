@@ -1,27 +1,19 @@
-#in vec3 pos, out func SignedDistance, out func Color,
+#in vec3 pos, out func SignedDistance, out func Color
 
-func sqrt(float x){
+def sqrt(float x){
     return x**0.5
 }
 
-func length(vec3 v){
+def length(vec3 v){
+    local x
     return sqrt(v.x*v.x + v.y*v.y + v.z*v.z)
 }
 
-func SignedDistance(vec3 pos){
-    local center = vec3(0.0,0.0,0.0)
-    local radius = 5.0
-    return length(p - center) - radius
+def SignedDistance(vec3 pos){
+    local center = vec3(0.0, 0.0, 0.0)
+    return length(pos - center) - 1.0
 }
 
-func Color(vec3 pos){
-    local r = 1.0f
-    local g = 1.0f
-    local b
-    local a
-    b = pos.x
-    a = pos.y
-    return vec4(r,g,b,a)
+def Color(vec3 pos){
+    return vec3(1.0, 0.0, 0.0)
 }
-
-

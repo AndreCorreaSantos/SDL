@@ -1,7 +1,7 @@
 from rply import LexerGenerator, ParserGenerator
 from lexer import lg
 
-lexer = lg.build()
+lexer = lg.build() # PERGUNTAS: COMO FAZER ACESSO DE PROPRIEDADE, OS TIPOS WHILE IF DO NEWLINE ETC ESTAO CORRETOS? DEVO DEFINIR TODOS ESSES TIPOS?
 
 pg = ParserGenerator([
     'PROGRAM_START', 'IN', 'OUT', 'TYPE', 'IDENTIFIER', 'INT', 'FLOAT', 'COMMA', 'LPAREN', 'RPAREN', 'EQUALS', 
@@ -110,16 +110,18 @@ def expression(p):
 def term(p):
     pass
 
-
-@pg.production("factor : INT | FLOAT | vectors | IDENTIFIER | LPAREN expression RPAREN | function_call | PLUS factor | MINUS factor | NOT factor")
+@pg.production("factor : INT | FLOAT | constructors | IDENTIFIER | LPAREN expression RPAREN | function_call | PLUS factor | MINUS factor | NOT factor")
 def factor(p):
     pass
 
-@pg.production("vectors : TYPE LPAREN func_call_args RPAREN")
+@pg.production("constructors : TYPE LPAREN func_call_args RPAREN")
+def constructors(p):
+    pass
 
 @pg.production("function_call : IDENTIFIER LPAREN func_call_args RPAREN")
 def function_call(p):
     pass
+
 
 parser = pg.build()
 
