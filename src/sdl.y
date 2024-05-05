@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-
+extern FILE *yyin;
 int yylex(void);
 void yyerror(char *s);
 %}
@@ -162,7 +162,20 @@ function_call
 %%
 
 int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Expected args: %s <input_file>\n", argv[0]);
+        return 1;
+    }
+    FILE *input_file = fopen(argv[1], "r");
+    if (!input_file) {
+        fprintf(stderr, "Error: could not open file %s\n", argv[1]);
+        return 1;
+    }
+    yyin = input_file;
     yyparse();
+
+    fclose(input_file);
+    return 0;
 }
 
 void yyerror(char *s) {
