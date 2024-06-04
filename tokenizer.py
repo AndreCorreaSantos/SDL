@@ -41,11 +41,7 @@ class Tokenizer:
             self.next = Token("", EOF)
             return
 
-        while (
-            self.position < len(self.source)
-            and self.source[self.position].isspace()
-            and self.source[self.position] != "\n"
-        ):
+        while (self.position < len(self.source) and self.source[self.position].isspace() and self.source[self.position] != "\n"):
             self.position += 1
 
         if self.position >= len(self.source):
@@ -55,55 +51,36 @@ class Tokenizer:
         current_char = self.source[self.position]
         token_type = self.get_tipo(current_char)
 
-        if token_type in [PLUS, MINUS, MUL, DIV, CLOSE_PAR, OPEN_PAR]:
-            self.next = Token(current_char, token_type)
-            self.position += 1
-        elif token_type == NEWLINE:
+        if token_type in [PLUS, MINUS, MUL, DIV, CLOSE_PAR, OPEN_PAR, COMMA, NEWLINE, ASSIGN, BIGGER, LESSER]:
             self.next = Token(current_char, token_type)
             self.position += 1
         elif token_type == NUM:
-            tipo = NUM
+            self.position += 1
             num_str = current_char
-            self.position += 1
-            while (self.position < len(self.source) and self.get_tipo(self.source[self.position]) == NUM or self.source[self.position] == "."):
-                num_str += self.source[self.position]
+            while self.position < len(self.source) and (self.source[self.position].isdigit() or self.source[self.position] == '.'):
+                if self.source[self.position] == '.':
+                    if self.position + 1 < len(self.source) and self.source[self.position + 1].isdigit():
+                        num_str += self.source[self.position]
+                    else:
+                        break
+                else:
+                    num_str += self.source[self.position]
                 self.position += 1
-            if "." in num_str:
-                tipo = FLOAT
-            self.next = Token(num_str, tipo)
-
-        elif token_type == BIGGER:
-            self.next = Token(current_char, token_type)
-            self.position += 1
-        elif token_type == LESSER:
-            self.next = Token(current_char, token_type)
-            self.position += 1
-        elif token_type == STR:
-            ident = ""
-            self.position += 1
-            while self.position < len(self.source) and self.get_tipo(
-                self.source[self.position]
-            ) not in [STR]:
-                ident += self.source[self.position]
-                self.position += 1
-            self.position += 1
-            self.next = Token(ident, STR)
-        elif token_type == CONCAT:
-            self.position += 1
-            if self.source[self.position] == ".":
-                self.next = Token("..", CONCAT)
-                self.position += 1
+            if '.' in num_str:
+                self.next = Token(num_str, FLOAT)
             else:
-                raise SyntaxError("Expecting . after .")
-        elif token_type == COMMA:
-            self.next = Token(current_char, COMMA)
-            self.position += 1
+                self.next = Token(num_str, NUM)
+        elif token_type == STR:
+            self.position += 1  # Skip initial quote
+            start = self.position
+            while self.position < len(self.source) and self.source[self.position] != '"':
+                self.position += 1
+            self.next = Token(self.source[start:self.position], STR)
+            self.position += 1  # Skip closing quote
         elif token_type == CHAR:
             ident = current_char
             self.position += 1
-            while self.position < len(self.source) and self.get_tipo(
-                self.source[self.position]
-            ) in [CHAR,NUM,]:  # CHAR inclui _
+            while self.position < len(self.source) and (self.source[self.position].isalpha() or self.source[self.position] == '_' or self.source[self.position].isdigit()):
                 ident += self.source[self.position]
                 self.position += 1
             if ident == "not":
@@ -114,17 +91,24 @@ class Tokenizer:
                 self.next = Token(ident, OR)
             else:
                 self.next = Token(ident, IDENTIFIER)
-
-        elif token_type == ASSIGN:  # mudar aqui, isso ta ninho de rato
-            if self.source[self.position + 1] == "=":  # checando se == ao inves de so =
+        elif token_type == CONCAT:
+            self.position += 1
+            if self.position < len(self.source) and self.source[self.position] == '.':
+                self.next = Token('..', CONCAT)
+                self.position += 1
+            else:
+                self.next = Token('.', DOT)
+        elif token_type == ASSIGN:
+            self.position += 1
+            if self.position < len(self.source) and self.source[self.position] == '=':
                 self.next = Token("==", EQUALS)
                 self.position += 1
             else:
-                self.next = Token(current_char, token_type)
-
-            self.position += 1
+                self.position -= 1
+                self.next = Token(current_char, ASSIGN)
+                self.position += 1
         else:
-            raise SyntaxError("Unallowed character")
+            raise SyntaxError("Unknown character encountered: " + current_char)
 
     def get_tipo(self, i):
         if i == "+":

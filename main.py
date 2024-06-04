@@ -311,7 +311,6 @@ class FuncDec(Node):
 
 class FuncCall(Node):
     def Evaluate(self, table):
-        # print(funcTable.functions.keys())
         func = funcTable.get(self.value)  # identificador da funcao vem no valor do node
 
         func_args, block = (
@@ -602,7 +601,7 @@ class Parser:
         return Return(None, expression)
 
     def parse_statement(self):
-        print(self.tokenizer.next.type)
+
         if self.tokenizer.next.value == "\n":
             return NoOp(None, None)
         elif self.tokenizer.next.type == IDENTIFIER:
