@@ -4,6 +4,7 @@ from tokenizer import *
 from vectors import Vec2, Vec3, Vec4
 import numpy as np
 import matplotlib.pyplot as plt
+from helpers import *
 
 
 reserved_words = ["print", "if", "while"]
@@ -736,11 +737,13 @@ class Parser:
 
     def run(self, source, fileName):
         count = 0
-        width, height = 10 , 10
+        width, height = 100 , 100
         aspect_ratio = width / height
         fov = np.pi / 3  # 60 degrees field of view
         camera_pos = np.array([0.0, 0.0, -5.0])
         image_data = np.zeros((height, width, 3), dtype=np.float32)
+        
+        total_pixels = width * height
         
         for x in range(width):
             for y in range(height):
@@ -764,12 +767,14 @@ class Parser:
                     if self.tokenizer.next.type != EOF:
                         raise SyntaxError("Invalid expression")
                     
-                    if in_variable_name == None or out_distance_name == None or out_color_name == None:
-                        raise RuntimeError("Input/output variables not defined")
+                    #check if compiler directives are set
+                    if ("in_variable_name" not in globals()) or "out_color_name" not in globals() or "out_distance_name" not in globals():
+                        raise RuntimeError("Input and output variables not defined")
 
                     table.create(in_variable_name, (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
                     Block.Evaluate(table)
                     
+
                     dist = table.get(out_distance_name)[0]
                     if dist < 0.01:  # Close enough to consider a hit
                         hit = True
@@ -783,7 +788,8 @@ class Parser:
                 if not hit:
                     image_data[y, x] = [0, 0, 0]  # Background color
 
-                print(count)
+                # Update progress bar
+                progress_bar(count, total_pixels,prefix='Progress:', suffix='Complete', length=50)
                 count += 1
 
         # Save the image to a PNG file
