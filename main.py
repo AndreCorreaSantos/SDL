@@ -1,6 +1,7 @@
-import sys  # CRIAR NODE RETURN E CASO BLOCO AVALIE RETURN ELE DEVE RETORNAR O VALOR PARA CIMA E ACABAR O EVALUATE
+import sys
 import re
 from tokenizer import *
+from vectors import Vec2, Vec3, Vec4
 
 
 reserved_words = ["print", "if", "while"]
@@ -64,44 +65,73 @@ class BinOp(Node):
         child1, type1 = self.children[0].Evaluate(table)
         child2, type2 = self.children[1].Evaluate(table)
 
-        # Handling operations between different types
-        if type1 != type2 and self.value not in ("..", "=="):
+       
+        def check_vector_and_scalar(op_type1, op_type2):
+            if "vec" in op_type1 and "int" in op_type2 or "float" in op_type2:
+                return True
+            elif "vec" in op_type2 and "int" in op_type1 or "float" in op_type1:
+                return True
+            return False
+
+        if type1 != type2 and not check_vector_and_scalar(type1, type2) and self.value not in ("..", "=="):
             raise RuntimeError(f"Unsupported operation between {type1} and {type2}")
 
-        # Helper to determine result type
+        
         def result_type():
-            if "float" in (type1, type2):
+            if "vec" in type1 or "vec" in type2:
+                if type1 == type2 or check_vector_and_scalar(type1, type2):
+                    return type1 if "vec" in type1 else type2
+                else:
+                    raise RuntimeError("Vector operations require vectors of the same type or a scalar")
+            elif "float" in (type1, type2):
                 return "float"
             return "int"
 
-        # Defining operations for both int and float
+       
         if self.value == "+":
-            result = (child1 + child2, result_type())
-        elif self.value == "-":
-            result = (child1 - child2, result_type())
-        elif self.value == "*":
-            result = (child1 * child2, result_type())
-        elif self.value == "/":
-            if type1 == "float" or type2 == "float":
-                result = (child1 / child2, "float")  # Floating point division
+            if "vec" in type1 or "vec" in type2:
+                if "int" in type1 or "float" in type1 or "int" in type2 or "float" in type2:
+                    # Vector addition with scalar not generally defined, could be element-wise addition
+                    raise RuntimeError("Addition of vector with scalar not defined")
+                result = (child1 + child2, result_type())
             else:
-                result = (child1 // child2, "int")  # Integer division
+                result = (child1 + child2, result_type())
+        elif self.value == "-":
+            if "vec" in type1 or "vec" in type2:
+                result = (child1 - child2, type1 if "vec" in type1 else type2)
+            else:
+                result = (child1 - child2, result_type())
+        elif self.value == "*":
+            if "vec" in type1 and ("int" in type2 or "float" in type2):
+                result = (child1.scale(child2), type1)  # Assuming Vec classes have a 'scale' method
+            elif "vec" in type2 and ("int" in type1 or "float" in type1):
+                result = (child2.scale(child1), type2)  # Assuming Vec classes have a 'scale' method
+            elif "vec" in type1 and "vec" in type2:
+                result = (child1.dot(child2), 'float')  # Dot product
+            else:
+                result = (child1 * child2, result_type())
+        elif self.value == "/":
+            if "vec" in type1 and ("int" in type2 or "float" in type2):
+                result = (child1.scale(1/child2), type1)  # Scalar division
+            else:
+                raise RuntimeError("Unsupported operation for vectors")
         elif self.value == "or":
             result = (child1 or child2, result_type())
         elif self.value == "==":
             result = (child1 == child2, "int")
-        elif self.value == "<":
-            result = (child1 < child2, "int")
-        elif self.value == ">":
-            result = (child1 > child2, "int")
+        elif self.value == "<" or self.value == ">":
+            raise RuntimeError("Comparison not defined for vectors")
         elif self.value == "and":
             result = (child1 and child2, result_type())
         elif self.value == "..":
+            if "vec" in type1 or "vec" in type2:
+                raise RuntimeError("Concatenation not defined for vectors")
             result = (str(child1) + str(child2), "str")
         else:
             raise RuntimeError("Unknown operation")
 
         return result
+
 
 
 class UnOp(Node):
@@ -127,6 +157,47 @@ class FloatVal(Node):
     def Evaluate(self, table):
         return (float(self.value), "float")
 
+    
+class Vec2Val(Node):
+    def __init__(self, x, y):
+        super().__init__(None, [])
+        self.x = x
+        self.y = y
+
+    def Evaluate(self, table):
+        self.x = self.x.Evaluate(table)
+        self.y = self.y.Evaluate(table)
+        return (Vec2(float(self.x[0]), float(self.y[0])), 'vec2')
+
+class Vec3Val(Node):
+    def __init__(self, x, y, z):
+        super().__init__(None, [])
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def Evaluate(self, table):
+        self.x = self.x.Evaluate(table)
+        self.y = self.y.Evaluate(table)
+        self.z = self.z.Evaluate(table)
+        return (Vec3(float(self.x[0]), float(self.y[0]), float(self.z[0])), 'vec3')
+
+class Vec4Val(Node):
+    def __init__(self, x, y, z, w):
+        super().__init__(None, [])
+        self.x = x
+        self.y = y
+        self.z = z
+        self.w = w
+
+    def Evaluate(self, table):
+        self.x = self.x.Evaluate(table)
+        self.y = self.y.Evaluate(table)
+        self.z = self.z.Evaluate(table) 
+        self.w = self.w.Evaluate(table)
+        return (Vec4(float(self.x[0]), float(self.y[0]), float(self.z[0]), float(self.w[0])), 'vec4')
+
+
 
 class StrVal(Node):
     def Evaluate(self, table):
@@ -135,7 +206,29 @@ class StrVal(Node):
 
 class Identifier(Node):
     def Evaluate(self, table):
-        return table.get(self.value)
+        if self.children: # Vector property access
+            vector = table.get(self.value)
+            property_name = self.children[0].value
+            if hasattr(vector, property_name):
+                return getattr(vector, property_name), type(vector).__name__
+            else:
+                raise AttributeError("Property not found in vector")
+        else:
+            return table.get(self.value)
+        
+class PropertyAccess(Node):
+    def __init__(self, identifier, property_name):
+        super().__init__(None, [])
+        self.identifier = identifier
+        self.property_name = property_name
+
+    def Evaluate(self, table):
+        vector = self.identifier.Evaluate(table)[0]
+        if hasattr(vector, self.property_name):
+            return getattr(vector, self.property_name), type(vector).__name__
+        else:
+            raise AttributeError(f"Property {self.property_name} not found on vector")
+
 
 
 class Block(Node):
@@ -148,8 +241,15 @@ class Block(Node):
 
 class Assign(Node):
     def Evaluate(self, table):
-        expression_result = self.children.Evaluate(table)
-        table.set(self.value, expression_result)
+        if isinstance(self.children[0], PropertyAccess):
+            vector, _ = self.children[0].identifier.Evaluate(table)
+            value, _ = self.children[1].Evaluate(table)
+            setattr(vector, self.children[0].property_name, value)
+            table.set(self.children[0].identifier.value, vector)
+        else:
+            value, _ = self.children[1].Evaluate(table)
+            table.set(self.value, value)
+
 
 
 class Read(Node):
@@ -269,38 +369,53 @@ class Parser:
     def factor(self):
         next = self.tokenizer.next
         if next.type == IDENTIFIER:
-            if next.value == "read":
+            # Handle vector initialization 
+            if next.value.startswith("vec"):
+                vector_size = int(next.value[3:])  # Extracts the '2', '3', or '4' from vec2, vec3, vec4
                 self.tokenizer.select_next()
-                if self.tokenizer.next.value != "(":
-                    raise SyntaxError("Expecting opening Parenthesis after read")
+                if self.tokenizer.next.type != OPEN_PAR:
+                    raise SyntaxError("Expecting '(' after vector type")
                 self.tokenizer.select_next()
-                if self.tokenizer.next.value != ")":
-                    raise SyntaxError("Expecting opening Parenthesis after read")
+                elements = []
+                if self.tokenizer.next.type != CLOSE_PAR:
+                    elements.append(self.parse_expression())
+                    while self.tokenizer.next.type == COMMA:
+                        self.tokenizer.select_next()
+                        elements.append(self.parse_expression())
+
+                if len(elements) != vector_size:
+                    raise SyntaxError(f"Expected {vector_size} elements for {next.value}")
+                if self.tokenizer.next.type != CLOSE_PAR:
+                    raise SyntaxError("Expecting ')' after vector elements")
                 self.tokenizer.select_next()
-                node = Read(None, None)
+                if vector_size == 2:
+                    return Vec2Val(elements[0], elements[1])
+                elif vector_size == 3:
+                    return Vec3Val(elements[0], elements[1], elements[2])
+                elif vector_size == 4:
+                    return Vec4Val(elements[0], elements[1], elements[2], elements[3])
+
+            self.tokenizer.select_next()
+            if self.tokenizer.next.type == DOT:
+                self.tokenizer.select_next()
+                if self.tokenizer.next.type == IDENTIFIER:
+                    property_name = self.tokenizer.next.value
+                    self.tokenizer.select_next()
+                    return PropertyAccess(Identifier(next.value, None), property_name)
+            elif self.tokenizer.next.type == OPEN_PAR:  # CHAMADA DE FUNCAO COM RETORNO DE VALOR
+                args = []  # primeiro filho vai ser o identificador da funcao
+                self.tokenizer.select_next()
+                if self.tokenizer.next.type != CLOSE_PAR:
+                    args.append(self.parse_expression())
+                    while self.tokenizer.next.type == COMMA:
+                        self.tokenizer.select_next()
+                        args.append(self.parse_expression())
+                if self.tokenizer.next.type != CLOSE_PAR:
+                    raise SyntaxError("Expecting closing parenthesis after function arguments")
+                self.tokenizer.select_next()
+                return FuncCall(next.value, args)
             else:
-                self.tokenizer.select_next()
-                if (self.tokenizer.next.type == OPEN_PAR):  # CHAMADA DE FUNCAO COM RETORNO DE VALOR
-                    ident = next.value
-                    args = []  # primeiro filho vai ser o identificador da funcao
-                    self.tokenizer.select_next()
-                    if self.tokenizer.next.type != CLOSE_PAR:
-                        args.append(self.bool_expression())
-                        while self.tokenizer.next.type == COMMA:
-                            self.tokenizer.select_next()
-                            args.append(self.bool_expression())
-
-                    if self.tokenizer.next.type != CLOSE_PAR:
-                        raise SyntaxError(
-                            "Expecting closing parenthesis after function arguments"
-                        )
-                    self.tokenizer.select_next()
-                    node = FuncCall(ident, args)
-                else:
-
-                    node = Identifier(next.value, None)
-
-            return node
+                return Identifier(next.value, None)
 
         if next.type == STR:
             val = next.value
@@ -310,35 +425,28 @@ class Parser:
             val = next.value
             self.tokenizer.select_next()
             return IntVal(val, None)
-        
         if next.type == FLOAT:
             val = next.value
             self.tokenizer.select_next()
             return FloatVal(val, None)
-
         if next.type == PLUS:
             self.tokenizer.select_next()
             return UnOp("+", self.factor())
-
         if next.type == MINUS:
             self.tokenizer.select_next()
             return UnOp("-", self.factor())
-
         if next.type == NOT:
             self.tokenizer.select_next()
             return UnOp("not", self.factor())
-
-
         elif next.type == OPEN_PAR:
             self.tokenizer.select_next()
-            result = self.bool_expression()
+            result = self.parse_expression()
             if self.tokenizer.next.type != CLOSE_PAR:
-                raise SyntaxError(" No closing parenthesis")
+                raise SyntaxError("No closing parenthesis")
             self.tokenizer.select_next()
             return result
-
         else:
-            raise SyntaxError("Weird term")
+            raise SyntaxError("Unexpected token")
 
     def term(self):
         result = self.factor()
@@ -494,6 +602,7 @@ class Parser:
         return Return(None, expression)
 
     def parse_statement(self):
+        print(self.tokenizer.next.type)
         if self.tokenizer.next.value == "\n":
             return NoOp(None, None)
         elif self.tokenizer.next.type == IDENTIFIER:

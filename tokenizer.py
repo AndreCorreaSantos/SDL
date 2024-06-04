@@ -22,6 +22,7 @@ STR = 23
 CONCAT = 24
 COMMA = 25
 FLOAT = 26
+DOT = 27
 
 class Token:
     def __init__(self, value, type):
