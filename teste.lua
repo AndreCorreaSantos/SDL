@@ -1,5 +1,15 @@
-local x = vec3(3.0,1.0,1.0)
-local y = vec3(1.0,2.0,3.0)
-local z = x*2.0
-print(z.x)
+
+
+function distance(point1, point2)
+    return ((point1.x - point2.x)^2 + (point1.y - point2.y)^2 + (point1.z - point2.z)^2)^0.5
+end
+    
+function sphereSDF(point)
+    local center = vec3(0, 0, 0)
+    local radius = 1.0
+    return distance(point, center) - radius
+end
+
+print(sphereSDF(vec3(1, 1, 1)))
+
 

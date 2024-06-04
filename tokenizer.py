@@ -23,6 +23,7 @@ CONCAT = 24
 COMMA = 25
 FLOAT = 26
 DOT = 27
+POW = 28
 
 class Token:
     def __init__(self, value, type):
@@ -51,7 +52,7 @@ class Tokenizer:
         current_char = self.source[self.position]
         token_type = self.get_tipo(current_char)
 
-        if token_type in [PLUS, MINUS, MUL, DIV, CLOSE_PAR, OPEN_PAR, COMMA, NEWLINE, ASSIGN, BIGGER, LESSER]:
+        if token_type in [PLUS, MINUS, MUL, DIV, CLOSE_PAR, OPEN_PAR, COMMA, NEWLINE, ASSIGN, BIGGER, LESSER, POW]:
             self.next = Token(current_char, token_type)
             self.position += 1
         elif token_type == NUM:
@@ -119,6 +120,8 @@ class Tokenizer:
             return NUM
         if i == "*":
             return MUL
+        if i == "^":
+            return POW
         if i == "/":
             return DIV
         if i == "(":

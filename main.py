@@ -65,18 +65,17 @@ class BinOp(Node):
         child1, type1 = self.children[0].Evaluate(table)
         child2, type2 = self.children[1].Evaluate(table)
 
-       
         def check_vector_and_scalar(op_type1, op_type2):
-            if "vec" in op_type1 and "int" in op_type2 or "float" in op_type2:
+            if "vec" in op_type1 and ("int" in op_type2 or "float" in op_type2):
                 return True
-            elif "vec" in op_type2 and "int" in op_type1 or "float" in op_type1:
+            elif "vec" in op_type2 and ("int" in op_type1 or "float" in op_type1):
                 return True
             return False
 
-        if type1 != type2 and not check_vector_and_scalar(type1, type2) and self.value not in ("..", "=="):
+        if type1 != type2 and not check_vector_and_scalar(type1, type2) and self.value not in ("..", "==","^"):
+            print(child1, child2)
             raise RuntimeError(f"Unsupported operation between {type1} and {type2}")
 
-        
         def result_type():
             if "vec" in type1 or "vec" in type2:
                 if type1 == type2 or check_vector_and_scalar(type1, type2):
@@ -87,46 +86,33 @@ class BinOp(Node):
                 return "float"
             return "int"
 
-       
         if self.value == "+":
-            if "vec" in type1 or "vec" in type2:
-                if "int" in type1 or "float" in type1 or "int" in type2 or "float" in type2:
-                    # Vector addition with scalar not generally defined, could be element-wise addition
-                    raise RuntimeError("Addition of vector with scalar not defined")
-                result = (child1 + child2, result_type())
-            else:
-                result = (child1 + child2, result_type())
+            result = (child1 + child2, result_type())
         elif self.value == "-":
-            if "vec" in type1 or "vec" in type2:
-                result = (child1 - child2, type1 if "vec" in type1 else type2)
-            else:
-                result = (child1 - child2, result_type())
+            result = (child1 - child2, result_type())
         elif self.value == "*":
-            if "vec" in type1 and ("int" in type2 or "float" in type2):
-                result = (child1.scale(child2), type1)  # Assuming Vec classes have a 'scale' method
-            elif "vec" in type2 and ("int" in type1 or "float" in type1):
-                result = (child2.scale(child1), type2)  # Assuming Vec classes have a 'scale' method
-            elif "vec" in type1 and "vec" in type2:
-                result = (child1.dot(child2), 'float')  # Dot product
-            else:
-                result = (child1 * child2, result_type())
+            result = (child1 * child2, result_type())
         elif self.value == "/":
-            if "vec" in type1 and ("int" in type2 or "float" in type2):
-                result = (child1.scale(1/child2), type1)  # Scalar division
+            if type1 == "float" or type2 == "float":
+                result = (child1 / child2, "float")  # Floating point division
             else:
-                raise RuntimeError("Unsupported operation for vectors")
+                result = (child1 // child2, "int")  # Integer division
         elif self.value == "or":
             result = (child1 or child2, result_type())
         elif self.value == "==":
             result = (child1 == child2, "int")
-        elif self.value == "<" or self.value == ">":
-            raise RuntimeError("Comparison not defined for vectors")
+        elif self.value == "<":
+            result = (child1 < child2, "int")
+        elif self.value == ">":
+            result = (child1 > child2, "int")
         elif self.value == "and":
             result = (child1 and child2, result_type())
         elif self.value == "..":
-            if "vec" in type1 or "vec" in type2:
-                raise RuntimeError("Concatenation not defined for vectors")
             result = (str(child1) + str(child2), "str")
+        elif self.value == "^":
+            if "vec" in (type1, type2):
+                raise RuntimeError("Exponentiation not defined for vectors")
+            result = (pow(child1, child2), "float" if "float" in (type1, type2) else "int")
         else:
             raise RuntimeError("Unknown operation")
 
@@ -447,19 +433,24 @@ class Parser:
         else:
             raise SyntaxError("Unexpected token")
 
+    def power(self):
+        node = self.factor()
+        while self.tokenizer.next.type == POW:
+            self.tokenizer.select_next()
+            right = self.factor()
+            node = BinOp('^', [node, right])
+        return node
+
     def term(self):
-        result = self.factor()
+        node = self.power()  # Instead of self.factor(), it should now start with self.power()
         while self.tokenizer.next.type in [MUL, DIV]:
             if self.tokenizer.next.type == MUL:
                 self.tokenizer.select_next()
-                result = BinOp("*", [result, self.factor()])
+                node = BinOp('*', [node, self.power()])
             elif self.tokenizer.next.type == DIV:
                 self.tokenizer.select_next()
-                result = BinOp("/", [result, self.factor()])
-            else:
-                raise SyntaxError("Invalid expression")
-
-        return result
+                node = BinOp('/', [node, self.power()])
+        return node
 
     def parse_expression(self):
         result = self.term()
@@ -601,7 +592,6 @@ class Parser:
         return Return(None, expression)
 
     def parse_statement(self):
-
         if self.tokenizer.next.value == "\n":
             return NoOp(None, None)
         elif self.tokenizer.next.type == IDENTIFIER:
