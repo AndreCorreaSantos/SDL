@@ -10,6 +10,12 @@ function sphereSDF(point)
     return distance(point, center) - radius
 end
 
-print(sphereSDF(vec3(1, 1, 1)))
+function SignedDistance(point)
+    return sphereSDF(point)
+end
+
+function Color(point)
+    return vec3(1, 0, 0)
+end
 
 
