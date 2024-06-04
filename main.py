@@ -2,6 +2,7 @@ import sys
 import re
 from tokenizer import *
 from vectors import Vec2, Vec3, Vec4
+import numpy as np
 
 
 reserved_words = ["print", "if", "while"]
@@ -25,6 +26,9 @@ class SymbolTable:
         if key in reserved_words:
             raise RuntimeError("Variable name is reserved")
         self.variables[key] = value
+
+    def clean(self):
+        self.variables = {}
 
 
 class FuncTable:
@@ -163,6 +167,7 @@ class Vec3Val(Node):
         self.z = z
 
     def Evaluate(self, table):
+
         self.x = self.x.Evaluate(table)
         self.y = self.y.Evaluate(table)
         self.z = self.z.Evaluate(table)
@@ -678,15 +683,41 @@ class Parser:
         return Block(None, children)
 
     def run(self, source):
-        table = SymbolTable()
-        global funcTable
-        funcTable = FuncTable()
-        self.tokenizer = Tokenizer(source)
-        self.tokenizer.select_next()
-        Block = self.parse_block()
-        if self.tokenizer.next.type != EOF:
-            raise SyntaxError(" Invalid expression")
-        Block.Evaluate(table)
+
+        
+        width, height = 1, 1
+        aspect_ratio = width / height
+        fov = np.pi / 3  # 60 degrees field of view
+        camera_pos = np.array([0.0, 0.0, -5.0])
+        image_data = np.zeros((height, width, 3), dtype=np.float32)
+        
+        for x in range(width):
+            for y in range(height):
+                # Convert screen position to world coordinates
+                px = (2 * (x + 0.5) / float(width) - 1) * np.tan(fov / 2) * aspect_ratio
+                py = (1 - 2 * (y + 0.5) / float(height)) * np.tan(fov / 2)
+                ray_dir = np.array([px, py, 1])
+                ray_dir /= np.linalg.norm(ray_dir)  # Normalize the vector
+
+                march_pos = np.copy(camera_pos)
+                hit = False
+                for step in range(100):
+                    point = march_pos + ray_dir * np.linalg.norm(march_pos)
+
+                    global funcTable
+                    funcTable = FuncTable()
+                    table = SymbolTable()
+                    self.tokenizer = Tokenizer(source)
+                    self.tokenizer.select_next()
+                    Block = self.parse_block()
+                    if self.tokenizer.next.type != EOF:
+                        raise SyntaxError("Invalid expression")
+                    
+                    print(point)
+                    table.create("point", (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
+                    Block.Evaluate(table)
+
+
 
 
 if __name__ == "__main__":

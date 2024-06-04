@@ -1,21 +1,22 @@
 
-
-function distance(point1, point2)
-    return ((point1.x - point2.x)^2 + (point1.y - point2.y)^2 + (point1.z - point2.z)^2)^0.5
+function distance(p1, p2)
+    return ((p1.x - p2.x)^2 + (p1.y - p2.y)^2 + (p1.z - p2.z)^2)^0.5
 end
     
-function sphereSDF(point)
-    local center = vec3(0, 0, 0)
+function sphereSDF(p)
+    local center = vec3(0.0, 0.0, 0.0)
     local radius = 1.0
-    return distance(point, center) - radius
+    return distance(p, center) - radius
 end
 
-function SignedDistance(point)
-    return sphereSDF(point)
+function SignedDistance(p)
+    return sphereSDF(p)
 end
 
-function Color(point)
-    return vec3(1, 0, 0)
+function Color(p)
+    return vec3(1.0, 0.0, 0.0)
 end
 
+print(SignedDistance(point))
+print(Color(point))
 
