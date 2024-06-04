@@ -227,6 +227,7 @@ class Block(Node):
         for children in self.children:
             if isinstance(children, Return):
                 return children.Evaluate(table)
+                
             children.Evaluate(table)
 
 
@@ -683,9 +684,8 @@ class Parser:
         return Block(None, children)
 
     def run(self, source):
-
-        
-        width, height = 1, 1
+        count = 0
+        width, height = 100, 100
         aspect_ratio = width / height
         fov = np.pi / 3  # 60 degrees field of view
         camera_pos = np.array([0.0, 0.0, -5.0])
@@ -702,7 +702,7 @@ class Parser:
                 march_pos = np.copy(camera_pos)
                 hit = False
                 for step in range(100):
-                    point = march_pos + ray_dir * np.linalg.norm(march_pos)
+                    point = march_pos + ray_dir * step
 
                     global funcTable
                     funcTable = FuncTable()
@@ -712,10 +712,27 @@ class Parser:
                     Block = self.parse_block()
                     if self.tokenizer.next.type != EOF:
                         raise SyntaxError("Invalid expression")
-                    
-                    print(point)
                     table.create("point", (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
                     Block.Evaluate(table)
+                    
+                    # Evaluate signed distance function
+                    dist = table.get("outDistance")[0]
+                    print(dist)
+                    if dist < 0.01:  # Close enough to consider a hit
+                        hit = True
+                        color = table.get("outColor")[0]
+                        image_data[y, x] = [color.x, color.y, color.z]
+                        break
+                    
+                    # Update march position along the ray
+                    march_pos += ray_dir * dist
+                
+                if not hit:
+                    image_data[y, x] = [0, 0, 0]  # Background color
+
+                print(count)
+                count += 1
+
 
 
 

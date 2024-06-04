@@ -17,6 +17,6 @@ function Color(p)
     return vec3(1.0, 0.0, 0.0)
 end
 
-print(SignedDistance(point))
-print(Color(point))
+local outDistance = SignedDistance(point)
+local outColor = Color(point)
 
