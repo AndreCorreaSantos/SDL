@@ -1,4 +1,4 @@
-#in vec3 input, out vec3 outColor, out float outDistance
+
 
 function distance(p1, p2)
     return ((p1.x - p2.x)^2 + (p1.y - p2.y)^2 + (p1.z - p2.z)^2)^0.5
@@ -18,6 +18,6 @@ function Color(p)
     return vec3(1.0, 0.5, 0.0)
 end
 
-local outDistance = SignedDistance(input)
-local outColor = Color(input)
+local outDistance = SignedDistance(point)
+local outColor = Color(point)
 

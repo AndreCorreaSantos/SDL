@@ -24,6 +24,7 @@ COMMA = 25
 FLOAT = 26
 DOT = 27
 POW = 28
+DIRECTIVE = 29
 
 class Token:
     def __init__(self, value, type):
@@ -52,7 +53,7 @@ class Tokenizer:
         current_char = self.source[self.position]
         token_type = self.get_tipo(current_char)
 
-        if token_type in [PLUS, MINUS, MUL, DIV, CLOSE_PAR, OPEN_PAR, COMMA, NEWLINE, ASSIGN, BIGGER, LESSER, POW]:
+        if token_type in [PLUS, MINUS, MUL, DIV, CLOSE_PAR, OPEN_PAR, COMMA, NEWLINE, ASSIGN, BIGGER, LESSER, POW, DIRECTIVE]:
             self.next = Token(current_char, token_type)
             self.position += 1
         elif token_type == NUM:
@@ -114,35 +115,37 @@ class Tokenizer:
     def get_tipo(self, i):
         if i == "+":
             return PLUS
-        if i == "-":
+        if i == "#":
+            return DIRECTIVE
+        elif i == "-":
             return MINUS
-        if i in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+        elif i in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
             return NUM
-        if i == "*":
+        elif i == "*":
             return MUL
-        if i == "^":
+        elif i == "^":
             return POW
-        if i == "/":
+        elif i == "/":
             return DIV
-        if i == "(":
+        elif i == "(":
             return OPEN_PAR
-        if i == ")":
+        elif i == ")":
             return CLOSE_PAR
-        if i == ",":
+        elif i == ",":
             return COMMA
-        if i.isalpha() or i == "_":
+        elif i.isalpha() or i == "_":
             return CHAR
-        if i == ".":
+        elif i == ".":
             return CONCAT
-        if i == "\n":
+        elif i == "\n":
             return NEWLINE
-        if i == "=":
+        elif i == "=":
             return ASSIGN
-        if i == "<":
+        elif i == "<":
             return LESSER
-        if i == ">":
+        elif i == ">":
             return BIGGER
-        if i == '"':
+        elif i == '"':
             return STR
         else:
             return ERROR

@@ -597,10 +597,60 @@ class Parser:
         if self.tokenizer.next.type != NEWLINE:
             raise SyntaxError("Sem \\n no final")
         return Return(None, expression)
+    
+
+    def parse_directive(self):
+        if self.tokenizer.next.type != IDENTIFIER:
+            raise SyntaxError("Expecting identifier after directive")
+    
+        if self.tokenizer.next.value == "in":
+            self.tokenizer.select_next()
+            if self.tokenizer.next.type != IDENTIFIER:
+                raise SyntaxError("Expecting identifier after 'in'")
+            if self.tokenizer.next.value != "vec3":
+                raise SyntaxError("All programs must receive a vec3 input")
+            
+            self.tokenizer.select_next()
+
+            global in_variable_name
+            in_variable_name = self.tokenizer.next.value
+            
+        elif self.tokenizer.next.value == "out":
+            self.tokenizer.select_next()
+            if self.tokenizer.next.type != IDENTIFIER:
+                raise SyntaxError("Expecting identifier after 'out'")
+            
+            if self.tokenizer.next.value == "vec3":
+                self.tokenizer.select_next()
+                global out_color_name
+                out_color_name = self.tokenizer.next.value
+            elif self.tokenizer.next.value == "float":
+                self.tokenizer.select_next()
+                global out_distance_name
+                out_distance_name = self.tokenizer.next.value
+            else:
+                raise SyntaxError("Output must be of type vec3 or float")
+            
+        
+        else:
+            raise SyntaxError("Invalid directive")
 
     def parse_statement(self):
         if self.tokenizer.next.value == "\n":
             return NoOp(None, None)
+        elif self.tokenizer.next.type == DIRECTIVE: # compiler directive statements
+            self.tokenizer.select_next()
+            self.parse_directive()
+            self.tokenizer.select_next()
+            while self.tokenizer.next.type == COMMA:
+                self.tokenizer.select_next()
+                self.parse_directive()
+                self.tokenizer.select_next()
+
+            if self.tokenizer.next.type != NEWLINE:
+                raise SyntaxError("Expecting newline after directive")
+            
+
         elif self.tokenizer.next.type == IDENTIFIER:
             ident = self.tokenizer.next.value
             if ident == "print":  # checando se print
@@ -686,7 +736,7 @@ class Parser:
 
     def run(self, source, fileName):
         count = 0
-        width, height = 10, 10
+        width, height = 10 , 10
         aspect_ratio = width / height
         fov = np.pi / 3  # 60 degrees field of view
         camera_pos = np.array([0.0, 0.0, -5.0])
@@ -714,14 +764,16 @@ class Parser:
                     if self.tokenizer.next.type != EOF:
                         raise SyntaxError("Invalid expression")
                     
-                    table.create("point", (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
+                    if in_variable_name == None or out_distance_name == None or out_color_name == None:
+                        raise RuntimeError("Input/output variables not defined")
+
+                    table.create(in_variable_name, (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
                     Block.Evaluate(table)
                     
-                    # Evaluate signed distance function
-                    dist = table.get("outDistance")[0]
+                    dist = table.get(out_distance_name)[0]
                     if dist < 0.01:  # Close enough to consider a hit
                         hit = True
-                        color = table.get("outColor")[0]
+                        color = table.get(out_color_name)[0]
                         image_data[y, x] = [color.x, color.y, color.z]
                         break
                     
@@ -747,4 +799,5 @@ if __name__ == "__main__":
         text = file.read()
     source = PrePro.filter(text)
     parser = Parser()
-    parser.run(source,sys.argv[1])
+    filename = sys.argv[1].split(".")[0]
+    parser.run(source,filename)
