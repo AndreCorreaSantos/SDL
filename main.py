@@ -3,6 +3,7 @@ import re
 from tokenizer import *
 from vectors import Vec2, Vec3, Vec4
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 reserved_words = ["print", "if", "while"]
@@ -683,9 +684,9 @@ class Parser:
                 children.append(statement)
         return Block(None, children)
 
-    def run(self, source):
+    def run(self, source, fileName):
         count = 0
-        width, height = 100, 100
+        width, height = 10, 10
         aspect_ratio = width / height
         fov = np.pi / 3  # 60 degrees field of view
         camera_pos = np.array([0.0, 0.0, -5.0])
@@ -712,12 +713,12 @@ class Parser:
                     Block = self.parse_block()
                     if self.tokenizer.next.type != EOF:
                         raise SyntaxError("Invalid expression")
+                    
                     table.create("point", (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
                     Block.Evaluate(table)
                     
                     # Evaluate signed distance function
                     dist = table.get("outDistance")[0]
-                    print(dist)
                     if dist < 0.01:  # Close enough to consider a hit
                         hit = True
                         color = table.get("outColor")[0]
@@ -733,6 +734,9 @@ class Parser:
                 print(count)
                 count += 1
 
+        # Save the image to a PNG file
+        plt.imsave(fileName + ".png", image_data)
+
 
 
 
@@ -743,4 +747,4 @@ if __name__ == "__main__":
         text = file.read()
     source = PrePro.filter(text)
     parser = Parser()
-    parser.run(source)
+    parser.run(source,sys.argv[1])
