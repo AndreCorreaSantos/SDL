@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helpers import *
 import copy
-
+import concurrent.futures
 
 reserved_words = ["print", "if", "while"]
 
@@ -772,12 +772,9 @@ class Parser:
         self.tokenizer.select_next()
         original_block = self.parse_block()
         
-        
-
         if ("in_variable_name" not in globals()) or "out_color_name" not in globals() or "out_distance_name" not in globals():
             raise RuntimeError("Input and output variables not defined")
         
-
         if "opt_steps" not in globals():
             opt_steps = 10
         else:
@@ -795,28 +792,30 @@ class Parser:
 
         print(f"Rendering image with {opt_width}x{opt_height} pixels and {opt_steps} steps")
 
-
         aspect_ratio = opt_width / opt_height
         fov = np.pi / 3 
         camera_pos = np.array([0.0, 0.0, -5.0])
         image_data = np.zeros((opt_height, opt_width, 3), dtype=np.float32)
         total_pixels = opt_width * opt_height
-        
-        for x in range(opt_width):
-            for y in range(opt_height):
-                # Convert screen position to world coordinates
 
-                image_data[x][y] = self.march(x, y, camera_pos, fov, original_block, aspect_ratio)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = []
+            for x in range(opt_width):
+                for y in range(opt_height):
+                    futures.append(executor.submit(self.march, x, y, camera_pos, fov, original_block, aspect_ratio))
 
+            for future in concurrent.futures.as_completed(futures):
+                result = future.result()
+                x, y, color = result
+                image_data[x][y] = color
                 # Update progress bar
-                progress_bar(count, total_pixels,prefix='Progress:', suffix='Complete', length=50)
+                progress_bar(count, total_pixels, prefix='Progress:', suffix='Complete', length=50)
                 count += 1
 
         # Save the image to a PNG file
         plt.imsave(fileName + ".png", image_data)
 
-
-    def march(self,x,y,camera_pos,fov,original_block,aspect_ratio):
+    def march(self, x, y, camera_pos, fov, original_block, aspect_ratio):
         
         px = (2 * (x + 0.5) / float(opt_width) - 1) * np.tan(fov / 2) * aspect_ratio
         py = (1 - 2 * (y + 0.5) / float(opt_height)) * np.tan(fov / 2)
@@ -825,29 +824,27 @@ class Parser:
 
         march_pos = np.copy(camera_pos)
         color = [0,0,0]
-        for step in range(opt_steps): # this raises: UnboundLocalError: local variable 'opt_steps' referenced before assignment
+        for step in range(opt_steps):
             block = copy.deepcopy(original_block)
             point = march_pos + ray_dir * step
-            # Make a copy of the original block for each iteration
-
             
             global funcTable
             funcTable = FuncTable()
             table = SymbolTable()
 
-            table.create(in_variable_name, (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
+            table.create(in_variable_name, (Vec3(*point),'vec3'))  
             block.Evaluate(table)
             
-
             dist = table.get(out_distance_name)[0]
-            if dist < 0.01:  # Close enough to consider a hit
+            if dist < 0.01:  
                 color = table.get(out_color_name)[0]
                 color = [color.x, color.y, color.z]
-                break
+                return x, y, color
             
             # Update march position along the ray
             march_pos += ray_dir * dist
-        return color
+        
+        return x, y, color
 
 
 

@@ -1,4 +1,4 @@
-#in vec3 teste, out vec3 abuble, out float coco, opt width 1000, opt height 1000, opt steps 5
+#in vec3 teste, out vec3 abuble, out float coco, opt width 20, opt height 20, opt steps 5
 
 function distance(p1, p2)
     return ((p1.x - p2.x)^2 + (p1.y - p2.y)^2 + (p1.z - p2.z)^2)^0.5
