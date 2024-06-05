@@ -5,6 +5,7 @@ from vectors import Vec2, Vec3, Vec4
 import numpy as np
 import matplotlib.pyplot as plt
 from helpers import *
+import copy
 
 
 reserved_words = ["print", "if", "while"]
@@ -631,6 +632,27 @@ class Parser:
                 out_distance_name = self.tokenizer.next.value
             else:
                 raise SyntaxError("Output must be of type vec3 or float")
+        
+        elif self.tokenizer.next.value == "width":
+            self.tokenizer.select_next()
+            if self.tokenizer.next.type != NUM:
+                raise SyntaxError("Expecting number after 'width'")
+            global width
+            width = int(self.tokenizer.next.value)
+
+        elif self.tokenizer.next.value == "height":
+            self.tokenizer.select_next()
+            if self.tokenizer.next.type != NUM:
+                raise SyntaxError("Expecting number after 'height'")
+            global height
+            height = int(self.tokenizer.next.value)
+        
+        elif self.tokenizer.next.value == "steps":
+            self.tokenizer.select_next()
+            if self.tokenizer.next.type != NUM:
+                raise SyntaxError("Expecting number after 'steps'")
+            global n_steps
+            n_steps = int(self.tokenizer.next.value)
             
         
         else:
@@ -737,7 +759,7 @@ class Parser:
 
     def run(self, source, fileName):
         count = 0
-        width, height = 100 , 100
+        width, height = 100, 100
         aspect_ratio = width / height
         fov = np.pi / 3  # 60 degrees field of view
         camera_pos = np.array([0.0, 0.0, -5.0])
@@ -745,6 +767,14 @@ class Parser:
         
         total_pixels = width * height
         
+        # Parse the block outside the loop
+        self.tokenizer = Tokenizer(source)
+        self.tokenizer.select_next()
+        original_block = self.parse_block()
+        
+        if "n_steps" not in globals():
+            n_steps = 10
+
         for x in range(width):
             for y in range(height):
                 # Convert screen position to world coordinates
@@ -755,15 +785,18 @@ class Parser:
 
                 march_pos = np.copy(camera_pos)
                 hit = False
-                for step in range(100):
-                    point = march_pos + ray_dir * step
+                
 
-                    global funcTable
+
+                for step in range(n_steps):
+                    point = march_pos + ray_dir * step
+                    # Make a copy of the original block for each iteration
+
+                    block_copy = copy.deepcopy(original_block)
+                    global funcTable # recreating the tables for each iteration
                     funcTable = FuncTable()
                     table = SymbolTable()
-                    self.tokenizer = Tokenizer(source)
-                    self.tokenizer.select_next()
-                    Block = self.parse_block()
+
                     if self.tokenizer.next.type != EOF:
                         raise SyntaxError("Invalid expression")
                     
@@ -772,7 +805,7 @@ class Parser:
                         raise RuntimeError("Input and output variables not defined")
 
                     table.create(in_variable_name, (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
-                    Block.Evaluate(table)
+                    block_copy.Evaluate(table)
                     
 
                     dist = table.get(out_distance_name)[0]
