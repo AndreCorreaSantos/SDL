@@ -69,6 +69,7 @@ class Node:
 
 class BinOp(Node):
     def Evaluate(self, table):
+
         child1, type1 = self.children[0].Evaluate(table)
         child2, type2 = self.children[1].Evaluate(table)
 
@@ -80,7 +81,6 @@ class BinOp(Node):
             return False
 
         if type1 != type2 and not check_vector_and_scalar(type1, type2) and self.value not in ("..", "==","^"):
-            print(child1, child2)
             raise RuntimeError(f"Unsupported operation between {type1} and {type2}")
 
         def result_type():
@@ -109,19 +109,21 @@ class BinOp(Node):
         elif self.value == "==":
             result = (child1 == child2, "int")
         elif self.value == "<":
+            print(f"Comparing {child1} < {child2}")
             result = (child1 < child2, "int")
+            print(result)
         elif self.value == ">":
             result = (child1 > child2, "int")
         elif self.value == "and":
             result = (child1 and child2, result_type())
-        elif self.value == "..":
-            result = (str(child1) + str(child2), "str")
         elif self.value == "^":
             if "vec" in (type1, type2):
                 raise RuntimeError("Exponentiation not defined for vectors")
             result = (pow(child1, child2), "float" if "float" in (type1, type2) else "int")
         else:
             raise RuntimeError("Unknown operation")
+        
+        # print(result)
 
         return result
 
@@ -219,7 +221,8 @@ class PropertyAccess(Node):
     def Evaluate(self, table):
         vector = self.identifier.Evaluate(table)[0]
         if hasattr(vector, self.property_name):
-            return getattr(vector, self.property_name), type(vector).__name__
+            attr = getattr(vector, self.property_name)
+            return attr, "float"
         else:
             raise AttributeError(f"Property {self.property_name} not found on vector")
 
@@ -229,21 +232,14 @@ class Block(Node):
     def Evaluate(self, table):
         for children in self.children:
             if isinstance(children, Return):
-                return children.Evaluate(table)
-                
+                return children.Evaluate(table)  
             children.Evaluate(table)
 
 
 class Assign(Node):
     def Evaluate(self, table):
-        if isinstance(self.children[0], PropertyAccess):
-            vector, _ = self.children[0].identifier.Evaluate(table)
-            value, _ = self.children[1].Evaluate(table)
-            setattr(vector, self.children[0].property_name, value)
-            table.set(self.children[0].identifier.value, vector)
-        else:
-            value, _ = self.children[1].Evaluate(table)
-            table.set(self.value, value)
+        expression_result = self.children.Evaluate(table)
+        table.set(self.value, expression_result)
 
 
 
@@ -508,7 +504,6 @@ class Parser:
         if self.tokenizer.next.value != "end":
             raise SyntaxError("Expected 'end' after 'if'")
         self.tokenizer.select_next()
-
         return If(None, childs)  # Retornando node
 
     def call_while(self):
@@ -804,9 +799,8 @@ class Parser:
         
         for x in range(opt_width):
             for y in range(opt_height):
-                # Convert screen position to world coordinates
 
-                image_data[x][y] = self.march(x, y, camera_pos, fov, original_block, aspect_ratio)
+                image_data[x][y] = self.march(x, y, camera_pos, fov, original_block, aspect_ratio, opt_width, opt_height, opt_steps, in_variable_name, out_distance_name, out_color_name)
 
                 # Update progress bar
                 progress_bar(count, total_pixels,prefix='Progress:', suffix='Complete', length=50)
@@ -816,7 +810,7 @@ class Parser:
         plt.imsave(fileName + ".png", image_data)
 
 
-    def march(self,x,y,camera_pos,fov,original_block,aspect_ratio):
+    def march(self,x,y,camera_pos,fov,original_block,aspect_ratio,opt_width,opt_height,opt_steps,in_variable_name,out_distance_name,out_color_name):
         
         px = (2 * (x + 0.5) / float(opt_width) - 1) * np.tan(fov / 2) * aspect_ratio
         py = (1 - 2 * (y + 0.5) / float(opt_height)) * np.tan(fov / 2)
@@ -853,9 +847,9 @@ class Parser:
 
 if __name__ == "__main__":
     text = ""
-    with open(sys.argv[1], "r") as file:
+    with open("code_examples/property.lua", "r") as file:
         text = file.read()
     source = PrePro.filter(text)
     parser = Parser()
-    filename = sys.argv[1].split(".")[0]
+    filename = "property"
     parser.run(source,filename)
