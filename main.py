@@ -633,29 +633,36 @@ class Parser:
             else:
                 raise SyntaxError("Output must be of type vec3 or float")
         
-        elif self.tokenizer.next.value == "width":
+        elif self.tokenizer.next.value == "opt":
             self.tokenizer.select_next()
-            if self.tokenizer.next.type != NUM:
-                raise SyntaxError("Expecting number after 'width'")
-            global width
-            width = int(self.tokenizer.next.value)
+            if self.tokenizer.next.value == "width":
+                self.tokenizer.select_next()
+                if self.tokenizer.next.type != NUM:
+                    raise SyntaxError("Expecting number after 'opt_width'")
+                global opt_width
+                opt_width = int(self.tokenizer.next.value)
 
-        elif self.tokenizer.next.value == "height":
-            self.tokenizer.select_next()
-            if self.tokenizer.next.type != NUM:
-                raise SyntaxError("Expecting number after 'height'")
-            global height
-            height = int(self.tokenizer.next.value)
-        
-        elif self.tokenizer.next.value == "steps":
-            self.tokenizer.select_next()
-            if self.tokenizer.next.type != NUM:
-                raise SyntaxError("Expecting number after 'steps'")
-            global n_steps
-            n_steps = int(self.tokenizer.next.value)
+            elif self.tokenizer.next.value == "height":
+                self.tokenizer.select_next()
+                if self.tokenizer.next.type != NUM:
+                    raise SyntaxError("Expecting number after 'height'")
+                global opt_height
+                opt_height = int(self.tokenizer.next.value)
+            
+            elif self.tokenizer.next.value == "steps":
+                self.tokenizer.select_next()
+                if self.tokenizer.next.type != NUM:
+                    raise SyntaxError("Expecting number after 'steps'")
+                
+                global opt_steps
+                opt_steps = int(self.tokenizer.next.value)
+            
+            else:
+                raise SyntaxError("Invalid option")
             
         
         else:
+            print(self.tokenizer.next.value)
             raise SyntaxError("Invalid directive")
 
     def parse_statement(self):
@@ -759,50 +766,66 @@ class Parser:
 
     def run(self, source, fileName):
         count = 0
-        width, height = 100, 100
-        aspect_ratio = width / height
-        fov = np.pi / 3  # 60 degrees field of view
-        camera_pos = np.array([0.0, 0.0, -5.0])
-        image_data = np.zeros((height, width, 3), dtype=np.float32)
         
-        total_pixels = width * height
-        
-        # Parse the block outside the loop
+        # Parsing the block
         self.tokenizer = Tokenizer(source)
         self.tokenizer.select_next()
         original_block = self.parse_block()
         
-        if "n_steps" not in globals():
-            n_steps = 10
+        
 
-        for x in range(width):
-            for y in range(height):
+        if ("in_variable_name" not in globals()) or "out_color_name" not in globals() or "out_distance_name" not in globals():
+            raise RuntimeError("Input and output variables not defined")
+        
+
+        if "opt_steps" not in globals():
+            opt_steps = 10
+        else:
+            opt_steps = globals()["opt_steps"]
+        
+        if "opt_width" not in globals():
+            opt_width = 100
+        else:
+            opt_width = globals()["opt_width"]
+        
+        if "opt_height" not in globals():
+            opt_height = 100
+        else:
+            opt_height = globals()["opt_height"]
+
+        print(f"Rendering image with {opt_width}x{opt_height} pixels and {opt_steps} steps")
+
+
+        aspect_ratio = opt_width / opt_height
+        fov = np.pi / 3 
+        camera_pos = np.array([0.0, 0.0, -5.0])
+        image_data = np.zeros((opt_height, opt_width, 3), dtype=np.float32)
+        total_pixels = opt_width * opt_height
+        
+
+        for x in range(opt_width):
+            for y in range(opt_height):
                 # Convert screen position to world coordinates
-                px = (2 * (x + 0.5) / float(width) - 1) * np.tan(fov / 2) * aspect_ratio
-                py = (1 - 2 * (y + 0.5) / float(height)) * np.tan(fov / 2)
+                px = (2 * (x + 0.5) / float(opt_width) - 1) * np.tan(fov / 2) * aspect_ratio
+                py = (1 - 2 * (y + 0.5) / float(opt_height)) * np.tan(fov / 2)
                 ray_dir = np.array([px, py, 1])
                 ray_dir /= np.linalg.norm(ray_dir)  # Normalize the vector
 
                 march_pos = np.copy(camera_pos)
                 hit = False
                 
-
-
-                for step in range(n_steps):
+                for step in range(opt_steps): # this raises: UnboundLocalError: local variable 'opt_steps' referenced before assignment
                     point = march_pos + ray_dir * step
                     # Make a copy of the original block for each iteration
 
                     block_copy = copy.deepcopy(original_block)
-                    global funcTable # recreating the tables for each iteration
+                    global funcTable
                     funcTable = FuncTable()
                     table = SymbolTable()
 
                     if self.tokenizer.next.type != EOF:
                         raise SyntaxError("Invalid expression")
                     
-                    #check if compiler directives are set
-                    if ("in_variable_name" not in globals()) or "out_color_name" not in globals() or "out_distance_name" not in globals():
-                        raise RuntimeError("Input and output variables not defined")
 
                     table.create(in_variable_name, (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
                     block_copy.Evaluate(table)
