@@ -15,7 +15,7 @@ end
 
 function min(a, b)
     local result
-    if a < b then -- IF PARECE ESTAR QUEBRADO !!!!!!!!!!!!!!!!!!!!! CONSERTAR IF, AS VEZES RETORNA NONE PARA CIMA
+    if a < b then
         result = a
     else
         result = b
@@ -30,7 +30,7 @@ function max(a, b)
     else
         result = b
     end
-    return result
+    return result 
 end
 
 local minD = min(1.0, 1.0)
