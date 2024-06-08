@@ -14,36 +14,28 @@ function abs(v)
 end
 
 function min(a, b)
-    if a < b then
-        return a
+    local result
+    if a < b then -- IF PARECE ESTAR QUEBRADO !!!!!!!!!!!!!!!!!!!!! CONSERTAR IF, AS VEZES RETORNA NONE PARA CIMA
+        result = a
     else
-        return b
+        result = b
     end
+    return result
 end
 
 function max(a, b)
+    local result
     if a > b then
-        return a
+        result = a
     else
-        return b
+        result = b
     end
+    return result
 end
 
-function cubeSDF(p, size)
-    local halfSize = size / 2.0
-    local dX = max(abs(p.x) - halfSize, 0.0)
-    local dY = max(abs(p.x) - halfSize, 0.0)
-    local dZ = max(abs(p.x) - halfSize, 0.0)
+local minD = min(1.0, 1.0)
 
-    local minD = min(1.0, min(1.0,1.0))
-    return 1.0
-end
-
-
-local t = vec3(0.0, 0.0, 0.0)
-local size = 1.0
-
-local u = cubeSDF(t, size)
+local min2 = min(1.0,minD)
 
 
 

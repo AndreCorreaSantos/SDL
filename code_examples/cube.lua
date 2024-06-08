@@ -1,19 +1,22 @@
 #in vec3 point, out vec3 color, out float distance, opt width 200, opt height 200, opt steps 5
 
 function max(a, b)
+    local result
     if a > b then
-        return a
+        result = a
     else
-        return b
+        result = b
     end
+    return result
 end
 
 function min(a, b)
     if a < b then
-        return a
+        result = a
     else
-        return b
+        result = b
     end
+    return result
 end
 
 function abs(v)

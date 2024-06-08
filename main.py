@@ -109,9 +109,7 @@ class BinOp(Node):
         elif self.value == "==":
             result = (child1 == child2, "int")
         elif self.value == "<":
-            print(f"Comparing {child1} < {child2}")
             result = (child1 < child2, "int")
-            print(result)
         elif self.value == ">":
             result = (child1 > child2, "int")
         elif self.value == "and":
@@ -122,8 +120,7 @@ class BinOp(Node):
             result = (pow(child1, child2), "float" if "float" in (type1, type2) else "int")
         else:
             raise RuntimeError("Unknown operation")
-        
-        # print(result)
+
 
         return result
 
@@ -657,7 +654,6 @@ class Parser:
             
         
         else:
-            print(self.tokenizer.next.value)
             raise SyntaxError("Invalid directive")
 
     def parse_statement(self):
@@ -847,9 +843,9 @@ class Parser:
 
 if __name__ == "__main__":
     text = ""
-    with open("code_examples/property.lua", "r") as file:
+    with open(sys.argv[1], "r") as file:
         text = file.read()
     source = PrePro.filter(text)
     parser = Parser()
-    filename = "property"
+    filename = sys.argv[1].split(".")[0]
     parser.run(source,filename)
