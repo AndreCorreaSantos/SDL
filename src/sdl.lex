@@ -3,7 +3,8 @@
 %}
 
 WS     [ \t\n]+
-TYPE   ("float"|"bool"|"vec4"|"vec3"|"vec2"|"func")
+INT    [0-9]+
+TYPE   ("float"|"bool"|"vec4"|"vec3"|"vec2")
 BOOL   ("true"|"false")
 IDENT  [a-zA-Z_][a-zA-Z0-9_]*
 NUMBER [0-9]+(\.[0-9]+)?
@@ -16,6 +17,10 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 "#"                      { return PROGRAM_START; }
 "in"                     { return IN; }
 "out"                    { return OUT; }
+"opt"                    { return OPT; }
+"width"                  { return WIDTH; }
+"height"                 { return HEIGHT; }
+"steps"                  { return STEPS; }
 "def"                   { return FUNC; }
 "local"                  { return LOCAL; }
 "while"                  { return WHILE; }
@@ -42,6 +47,7 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 "("                      { return LPAREN; }
 ")"                      { return RPAREN; }
 ","                      { return COMMA; }
+{INT}                    { return INT; }
 {TYPE}                   { return TYPE; }
 {BOOL}                   { return BOOL; }
 {IDENT}                  { return IDENTIFIER; }

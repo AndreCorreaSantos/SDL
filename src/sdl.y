@@ -15,21 +15,16 @@ void yyerror(char *s);
 %token <identifier> IDENTIFIER
 %token <number> FLOAT
 %token <boolean> BOOL
-%token PROGRAM_START IN OUT TYPE FUNC LOCAL WHILE IF THEN ELSE END AND OR NOT DO RETURN PROPERTY
+%token <integer> INT
+%token PROGRAM_START IN OUT TYPE FUNC LOCAL WHILE IF THEN ELSE END AND OR NOT DO RETURN PROPERTY OPT WIDTH HEIGHT STEPS
 %token PLUS MINUS MULTIPLY DIVIDE ASSIGN EQUALS GREATER LESS LBRACE RBRACE LPAREN RPAREN COMMA POWER NEWLINE
 
 %%
 
 program
-    : newlines PROGRAM_START program_args functions
+    : newlines PROGRAM_START program_args newlines
     ;
 
-functions
-    : newlines functions
-    | function functions
-    | function
-    | 
-    ;
 
 newlines
     : NEWLINE newlines
@@ -38,11 +33,23 @@ newlines
     ;
 
 program_args
-    : IN func_arg COMMA program_args
-    | OUT func_arg COMMA program_args
-    | OUT func_arg
-    | IN func_arg
+    : IN arg COMMA program_args
+    | OUT arg COMMA program_args
+    | OPT option INT COMMA program_args
+    | OUT arg
+    | IN arg
+    | OPT option INT
     ;
+
+option
+    : WIDTH
+    | HEIGHT
+    | STEPS
+    ;
+
+arg 
+    : TYPE IDENTIFIER
+    ; 
 
 function
     : FUNC IDENTIFIER LPAREN func_args RPAREN LBRACE block RBRACE
