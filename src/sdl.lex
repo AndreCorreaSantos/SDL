@@ -4,7 +4,8 @@
 
 WS     [ \t\n]+
 INT    [0-9]+
-TYPE   ("float"|"bool"|"vec4"|"vec3"|"vec2")
+VEC_TYPE  ("vec2"|"vec3"|"vec4")
+TYPE   ("float"|"bool")
 BOOL   ("true"|"false")
 IDENT  [a-zA-Z_][a-zA-Z0-9_]*
 NUMBER [0-9]+(\.[0-9]+)?
@@ -14,7 +15,7 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 %%
 
 {WS}                     ;
-"\n"                    { return NEWLINE; }
+"\n"                     { return NEWLINE; }
 "#"                      { return PROGRAM_START; }
 "in"                     { return IN; }
 "out"                    { return OUT; }
@@ -43,12 +44,11 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 "=="                     { return EQUALS; }
 ">"                      { return GREATER; }
 "<"                      { return LESS; }
-"{"                      { return LBRACE; }
-"}"                      { return RBRACE; }
 "("                      { return LPAREN; }
 ")"                      { return RPAREN; }
 ","                      { return COMMA; }
 {INT}                    { return INT; }
+{VEC_TYPE}              { return VEC_TYPE; }
 {TYPE}                   { return TYPE; }
 {BOOL}                   { return BOOL; }
 {IDENT}                  { return IDENTIFIER; }

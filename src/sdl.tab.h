@@ -62,38 +62,37 @@ extern int yydebug;
     IN = 263,                      /* IN  */
     OUT = 264,                     /* OUT  */
     TYPE = 265,                    /* TYPE  */
-    FUNC = 266,                    /* FUNC  */
-    LOCAL = 267,                   /* LOCAL  */
-    WHILE = 268,                   /* WHILE  */
-    IF = 269,                      /* IF  */
-    THEN = 270,                    /* THEN  */
-    ELSE = 271,                    /* ELSE  */
-    END = 272,                     /* END  */
-    AND = 273,                     /* AND  */
-    OR = 274,                      /* OR  */
-    NOT = 275,                     /* NOT  */
-    DO = 276,                      /* DO  */
-    RETURN = 277,                  /* RETURN  */
-    PROPERTY = 278,                /* PROPERTY  */
-    OPT = 279,                     /* OPT  */
-    WIDTH = 280,                   /* WIDTH  */
-    HEIGHT = 281,                  /* HEIGHT  */
-    STEPS = 282,                   /* STEPS  */
-    PLUS = 283,                    /* PLUS  */
-    MINUS = 284,                   /* MINUS  */
-    MULTIPLY = 285,                /* MULTIPLY  */
-    DIVIDE = 286,                  /* DIVIDE  */
-    ASSIGN = 287,                  /* ASSIGN  */
-    EQUALS = 288,                  /* EQUALS  */
-    GREATER = 289,                 /* GREATER  */
-    LESS = 290,                    /* LESS  */
-    LBRACE = 291,                  /* LBRACE  */
-    RBRACE = 292,                  /* RBRACE  */
-    LPAREN = 293,                  /* LPAREN  */
-    RPAREN = 294,                  /* RPAREN  */
-    COMMA = 295,                   /* COMMA  */
-    POWER = 296,                   /* POWER  */
-    NEWLINE = 297                  /* NEWLINE  */
+    VEC_TYPE = 266,                /* VEC_TYPE  */
+    FUNC = 267,                    /* FUNC  */
+    LOCAL = 268,                   /* LOCAL  */
+    WHILE = 269,                   /* WHILE  */
+    IF = 270,                      /* IF  */
+    THEN = 271,                    /* THEN  */
+    ELSE = 272,                    /* ELSE  */
+    END = 273,                     /* END  */
+    AND = 274,                     /* AND  */
+    OR = 275,                      /* OR  */
+    NOT = 276,                     /* NOT  */
+    DO = 277,                      /* DO  */
+    RETURN = 278,                  /* RETURN  */
+    PROPERTY = 279,                /* PROPERTY  */
+    OPT = 280,                     /* OPT  */
+    WIDTH = 281,                   /* WIDTH  */
+    HEIGHT = 282,                  /* HEIGHT  */
+    STEPS = 283,                   /* STEPS  */
+    PLUS = 284,                    /* PLUS  */
+    MINUS = 285,                   /* MINUS  */
+    MULTIPLY = 286,                /* MULTIPLY  */
+    DIVIDE = 287,                  /* DIVIDE  */
+    ASSIGN = 288,                  /* ASSIGN  */
+    EQUALS = 289,                  /* EQUALS  */
+    GREATER = 290,                 /* GREATER  */
+    LESS = 291,                    /* LESS  */
+    LPAREN = 292,                  /* LPAREN  */
+    RPAREN = 293,                  /* RPAREN  */
+    COMMA = 294,                   /* COMMA  */
+    POWER = 295,                   /* POWER  */
+    NEWLINE = 296                  /* NEWLINE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -109,7 +108,7 @@ union YYSTYPE
     double number;
     int boolean;
 
-#line 113 "src/sdl.tab.h"
+#line 112 "src/sdl.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
