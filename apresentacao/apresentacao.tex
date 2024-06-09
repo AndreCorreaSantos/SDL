@@ -323,17 +323,62 @@ Insper - Instituto de Ensino e Pesquisa \\ % Your institution for the title page
     
     
 \begin{frame}{Saída Exemplo 2}
-    
-    
     \begin{figure}
         \centering
         \includegraphics[width=0.5\linewidth]{imgs/cube.png}
         \caption{Saída obtida para o segundo exemplo}
         \label{fig:enter-label}
     \end{figure}
+\end{frame}
+
+\begin{frame}{Código Exemplo 3}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\linewidth]{imgs/exemplo3.png}
+        \caption{Código do terceiro exemplo}
+        \label{fig:enter-label}
+    \end{figure}
+\end{frame}
+
+
+
+\begin{frame}{Saída Exemplo 3}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{imgs/canvas.png}
+    \caption{Saída obtida para o terceiro exemplo}
+    \label{fig:enter-label}
+\end{figure}
     
 \end{frame}
 
+\begin{frame}{Resumo de implementações}
+\begin{itemize}
+\item \textbf{float} interpretação e operação com números de ponto flutuante.
+\item \textbf{Vectors} construção de vec2, vec3, vec4.
+\item \textbf{Property Access} acesso de propriedade de vetores.
+\item \textbf{Operações} suporte para operações vetoriais.
+\item \textbf{Diretivas de Compilação} parâmetros que determinam como a árvore sintática será executada podem ser escritos no início do programa.
+\item \textbf{Renderização via sdf} O output de um programa sdl já é uma imagem renderizada com base nas variáveis de cor e distância fornecidos pelo usuário.
+\item \textbf{Funções trigonométricas} Funções trigonométricas in-built foram implementadas no factor para possibilitar uma maior variedade de funções de cor e distância.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Discussão execução}
+    \textbf{Injeção de variáveis}: O processo de raymarching exige a avaliação da árvore sintática para cada pixel na tela e para cada passo do raio lançado,
+    ou seja, é necessário injetar um valor novo na variável vec3 descrita como "in" no topo do código para cada unidade de espaço da cena sendo marchada.
+
+    Para isso, a cada reavaliação da árvore é necessário criar uma nova symbol table e injetar o valor atual da variável "in" nessa nova symbol table.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.65\linewidth]{imgs/march_code.png}
+        \caption{Porção do código responsável por avaliar a árvore sintática}
+        \label{fig:enter-label}
+    \end{figure}
+        
+\end{frame}
 
 %------------------------------------------------
 

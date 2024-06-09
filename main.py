@@ -852,31 +852,30 @@ class Parser:
         px = (2 * (x + 0.5) / float(opt_width) - 1) * np.tan(fov / 2) * aspect_ratio
         py = (1 - 2 * (y + 0.5) / float(opt_height)) * np.tan(fov / 2)
         ray_dir = np.array([px, py, 1])
-        ray_dir /= np.linalg.norm(ray_dir)  # Normalize the vector
+        ray_dir /= np.linalg.norm(ray_dir) 
 
         march_pos = np.copy(camera_pos)
         color = [0,0,0]
-        for step in range(opt_steps): # this raises: UnboundLocalError: local variable 'opt_steps' referenced before assignment
+        for step in range(opt_steps):
             block = copy.deepcopy(original_block)
             point = march_pos + ray_dir * step
-            # Make a copy of the original block for each iteration
+           
 
             
             global funcTable
             funcTable = FuncTable()
             table = SymbolTable()
 
-            table.create(in_variable_name, (Vec3(*point),'vec3'))  # Convert numpy array to Vec3 if necessary
+            table.create(in_variable_name, (Vec3(*point),'vec3'))
             block.Evaluate(table)
             
 
             dist = table.get(out_distance_name)[0]
-            if dist < 0.01:  # Close enough to consider a hit
+            if dist < 0.01: 
                 color = table.get(out_color_name)[0]
                 color = [color.x, color.y, color.z]
                 break
             
-            # Update march position along the ray
             march_pos += ray_dir * dist
         return color
 

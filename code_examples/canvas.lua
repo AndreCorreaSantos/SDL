@@ -11,19 +11,11 @@ function abs(p)
 end
 
 function Color(p)
-    -- Normalize coordinates to be within the range [0, 1]
-    -- Assuming `p.x` and `p.y` vary from -50 to +50
-    local normalized_x = sin(p.x)  -- Adjusting by adding 50 and dividing by total width
-    local normalized_y = cos(p.x)  -- Adjusting by adding 50 and dividing by total height
-    print(normalized_x)
-
-    -- Clamp the values to ensure they are within [0, 1]
+    local normalized_x = (sin(10.0*p.x) +1.0)/2.0
+    local normalized_y = (cos(10.0*p.y)+1.0)/2.0
     local r = normalized_x
     local g = normalized_y
-    local b = 0.0  -- Constant blue component
-
-
-
+    local b = 0.0 
     return vec3(r, g, b)
 end
 
@@ -32,7 +24,7 @@ function sdf(p)
     if p.z > 0.0 then
         distance = 0.0
     end
-    return distance -- fazendo isso para garantir que a imagem não se forme atrás do plano da câmera
+    return distance
 end
 
 local distance = sdf(point)
