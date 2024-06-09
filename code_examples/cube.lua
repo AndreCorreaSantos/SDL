@@ -11,6 +11,7 @@ function max(a, b)
 end
 
 function min(a, b)
+    local result
     if a < b then
         result = a
     else
@@ -20,11 +21,13 @@ function min(a, b)
 end
 
 function abs(v)
-    if v < 0.0 then
-        return -v
+    local result = v
+    if result < 0.0 then
+        result = -v
     else
-        return v
+        result = v
     end
+    return result
 end
 
 function distance(p1, p2)

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.24)  8 JUN 2024 20:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.24)  9 JUN 2024 11:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -593,7 +593,32 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count346
 \l__pdf_internal_box=\box77
-) (./apresentacao.aux)
+) (./apresentacao.aux
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+
+LaTeX Warning: Label `fig:enter-label' multiply defined.
+
+)
 \openout1 = `apresentacao.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 123.
@@ -681,6 +706,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 123.
 LaTeX Info: Redefining \pageref on input line 123.
 LaTeX Info: Redefining \nameref on input line 123.
+ (./apresentacao.out) (./apresentacao.out)
 \@outlinefile=\write5
 \openout5 = `apresentacao.out'.
 
@@ -744,21 +770,19 @@ Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
  (./apresentacao.nav) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-No file apresentacao.toc.
-[2
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./apresentacao.toc) [2
 
 ] [3
 
 ] [4
 
 ]
-<imgs/image.png, id=149, 738.76pt x 414.54875pt>
+<imgs/image.png, id=185, 738.76pt x 414.54875pt>
 File: imgs/image.png Graphic file (type png)
 <use imgs/image.png>
 Package pdftex.def Info: imgs/image.png  used on input line 181.
 (pdftex.def)             Requested size: 68.45801pt x 38.4084pt.
-<imgs/physarum.png, id=153, 861.2175pt x 481.8pt>
+<imgs/physarum.png, id=189, 861.2175pt x 481.8pt>
 File: imgs/physarum.png Graphic file (type png)
 <use imgs/physarum.png>
 Package pdftex.def Info: imgs/physarum.png  used on input line 181.
@@ -770,7 +794,7 @@ Package pdftex.def Info: imgs/physarum.png  used on input line 181.
 LaTeX Font Warning: Font shape `OT1/cmss/bx/it' undefined
 (Font)              using `OT1/cmss/bx/n' instead on input line 204.
 
-<imgs/SDF.png, id=189, 717.68124pt x 721.69624pt>
+<imgs/SDF.png, id=225, 717.68124pt x 721.69624pt>
 File: imgs/SDF.png Graphic file (type png)
 <use imgs/SDF.png>
 Package pdftex.def Info: imgs/SDF.png  used on input line 204.
@@ -783,7 +807,7 @@ Overfull \hbox (21.90005pt too wide) in paragraph at lines 204--204
 [6
 
  <./imgs/SDF.png>]
-<imgs/image_plane.png, id=220, 501.875pt x 384.43625pt>
+<imgs/image_plane.png, id=255, 501.875pt x 384.43625pt>
 File: imgs/image_plane.png Graphic file (type png)
 <use imgs/image_plane.png>
 Package pdftex.def Info: imgs/image_plane.png  used on input line 226.
@@ -800,7 +824,7 @@ l.226 \end{frame}
                   [7
 
  <./imgs/image_plane.png>]
-<imgs/hitOrMiss.png, id=253, 269.005pt x 188.705pt>
+<imgs/hitOrMiss.png, id=286, 269.005pt x 188.705pt>
 File: imgs/hitOrMiss.png Graphic file (type png)
 <use imgs/hitOrMiss.png>
 Package pdftex.def Info: imgs/hitOrMiss.png  used on input line 245.
@@ -817,7 +841,7 @@ l.245 \end{frame}
                   [8
 
  <./imgs/hitOrMiss.png>]
-<imgs/iq.png, id=286, 1856.9375pt x 838.13126pt>
+<imgs/iq.png, id=317, 1856.9375pt x 838.13126pt>
 File: imgs/iq.png Graphic file (type png)
 <use imgs/iq.png>
 Package pdftex.def Info: imgs/iq.png  used on input line 259.
@@ -836,33 +860,19 @@ l.259 \end{frame}
  <./imgs/iq.png>] [10
 
 ]
-
-LaTeX Warning: File `exemplo_codigo.png' not found on input line 282.
-
-
-/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex:282: Package pdftex.def Error: File `exemplo_codigo.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.282 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<imgs/exemplo_codigo.png, id=372, 867.24pt x 433.62pt>
+File: imgs/exemplo_codigo.png Graphic file (type png)
+<use imgs/exemplo_codigo.png>
+Package pdftex.def Info: imgs/exemplo_codigo.png  used on input line 282.
+(pdftex.def)             Requested size: 239.60567pt x 119.79834pt.
 pdfTeX warning (ext4): destination with the same identifier (name{fig:enter-label}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.282 \end{frame}
-                 
-Overfull \vbox (41.48203pt too high) detected at line 282
- []
+                  [11
 
-[11
-
-]
-<imgs/ex1.png, id=369, 144.54pt x 144.54pt>
+ <./imgs/exemplo_codigo.png>]
+<imgs/ex1.png, id=400, 144.54pt x 144.54pt>
 File: imgs/ex1.png Graphic file (type png)
 <use imgs/ex1.png>
 Package pdftex.def Info: imgs/ex1.png  used on input line 298.
@@ -874,60 +884,46 @@ l.298 \end{frame}
                   [12
 
  <./imgs/ex1.png>]
+<imgs/cube1_code.png, id=428, 1543.7675pt x 1133.23375pt>
+File: imgs/cube1_code.png Graphic file (type png)
+<use imgs/cube1_code.png>
+Package pdftex.def Info: imgs/cube1_code.png  used on input line 310.
+(pdftex.def)             Requested size: 239.60567pt x 175.8742pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:enter-label}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.310 \end{frame}
+                  [13
 
-LaTeX Warning: File `imgs/neural_network_2.png' not found on input line 316.
-
-
-/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex:316: Package pdftex.def Error: File `imgs/neural_network_2.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.316 \end{frame}
+ <./imgs/cube1_code.png>]
+<imgs/cube2_code.png, id=457, 962.59625pt x 843.15pt>
+File: imgs/cube2_code.png Graphic file (type png)
+<use imgs/cube2_code.png>
+Package pdftex.def Info: imgs/cube2_code.png  used on input line 319.
+(pdftex.def)             Requested size: 239.60567pt x 209.87354pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:enter-label}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.319 \end{frame}
                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[13
-
-]
-
-LaTeX Warning: File `imgs/code_3.png' not found on input line 329.
-
-
-/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex:329: Package pdftex.def Error: File `imgs/code_3.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.329 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+Overfull \vbox (11.73627pt too high) detected at line 319
+ []
 
 [14
 
-]
+ <./imgs/cube2_code.png>]
+<imgs/cube.png, id=485, 144.54pt x 144.54pt>
+File: imgs/cube.png Graphic file (type png)
+<use imgs/cube.png>
+Package pdftex.def Info: imgs/cube.png  used on input line 335.
+(pdftex.def)             Requested size: 171.14764pt x 171.1556pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:enter-label}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.335 \end{frame}
+                  [15
 
-LaTeX Warning: File `imgs/neural_network_3.png' not found on input line 342.
-
-
-/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex:342: Package pdftex.def Error: File `imgs/neural_network_3.png' not found: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.342 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[15
-
-]
+ <./imgs/cube.png>]
 \tf@nav=\write6
 \openout6 = `apresentacao.nav'.
 
@@ -942,30 +938,24 @@ If that doesn't work, type  X <return>  to quit.
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
-
-Package rerunfilecheck Warning: File `apresentacao.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `apresentacao.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  575D5B2076E05B02CEB30BA3F270C9CD;871.
+Package rerunfilecheck Info: File `apresentacao.out' has not changed.
+(rerunfilecheck)             Checksum: 575D5B2076E05B02CEB30BA3F270C9CD;871.
  ) 
 Here is how much of TeX's memory you used:
- 24005 strings out of 480171
- 467243 string characters out of 5894489
- 705247 words of memory out of 5000000
- 41431 multiletter control sequences out of 15000+600000
- 472851 words of font info for 40 fonts, out of 8000000 for 9000
+ 23957 strings out of 480171
+ 465775 string characters out of 5894489
+ 707118 words of memory out of 5000000
+ 41393 multiletter control sequences out of 15000+600000
+ 472683 words of font info for 39 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  99i,16n,104p,480b,729s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on apresentacao.pdf (15 pages, 2197941 bytes).
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb>
+Output written on apresentacao.pdf (15 pages, 2378369 bytes).
 PDF statistics:
- 522 PDF objects out of 1000 (max. 8388607)
- 450 compressed objects within 5 object streams
+ 556 PDF objects out of 1000 (max. 8388607)
+ 477 compressed objects within 5 object streams
  44 named destinations out of 1000 (max. 500000)
- 120 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 202 words of extra memory for PDF output out of 10000 (max. 10000000)
 
