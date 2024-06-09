@@ -38,7 +38,7 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 "+"                      { return PLUS; }
 "-"                      { return MINUS; }
 "*"                      { return MULTIPLY; }
-"**"                     { return POWER; }
+"^"                     { return POWER; }
 "/"                      { return DIVIDE; }
 "="                      { return ASSIGN; }
 "=="                     { return EQUALS; }
