@@ -1,6 +1,24 @@
 #in vec3 point, out vec3 color, out float distance, opt width 200, opt height 200, opt steps 5
 
-local p1 = vec3(1.0,1.0,1.0)
-local p2 = p1.x^2
+function distance(p1, p2)
+    return ((p1.x - p2.x)^2.0 + (p1.y - p2.y)^2.0 + (p1.z - p2.z)^2.0)^0.5
+end
+    
+function sphereSDF(p)
+    local center = vec3(0.0, 0.0, 0.0)
+    local radius = 1.0
+    return distance(p, center) - radius
+end
+
+function SignedDistance(p)
+    return sphereSDF(p)
+end
+
+function Color(p)
+    return vec3(1.0, 0.5, 0.0)
+end
+
+local distance = SignedDistance(point)
+local color = Color(point)
 
 
