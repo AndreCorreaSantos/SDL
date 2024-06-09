@@ -67,6 +67,7 @@ statement
     | while_statement
     | if_statement
     | return_statement
+    | function_definition
     ;
 
 
@@ -77,7 +78,7 @@ dec_assign_statement
     ;
 
 
-function
+function_definition
     : FUNC IDENTIFIER LPAREN func_args RPAREN block END
     ;
 

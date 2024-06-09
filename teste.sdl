@@ -9,3 +9,7 @@ while 1.0 > 2.0 do
 local teste = 1.0
 end
 
+function teste()
+local x = 0.0
+return 1.0
+end
