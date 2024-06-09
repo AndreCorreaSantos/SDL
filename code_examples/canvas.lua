@@ -13,8 +13,9 @@ end
 function Color(p)
     -- Normalize coordinates to be within the range [0, 1]
     -- Assuming `p.x` and `p.y` vary from -50 to +50
-    local normalized_x = (p.x + 50.0) / 100.0  -- Adjusting by adding 50 and dividing by total width
-    local normalized_y = (p.y + 50.0) / 100.0  -- Adjusting by adding 50 and dividing by total height
+    local normalized_x = sin(p.x)  -- Adjusting by adding 50 and dividing by total width
+    local normalized_y = cos(p.x)  -- Adjusting by adding 50 and dividing by total height
+    print(normalized_x)
 
     -- Clamp the values to ensure they are within [0, 1]
     local r = normalized_x
@@ -27,9 +28,12 @@ function Color(p)
 end
 
 function sdf(p)
-    return abs(p.z) -- fazendo isso para garantir que a imagem não se forme atrás do plano da câmera
+    local distance = 1.0
+    if p.z > 0.0 then
+        distance = 0.0
+    end
+    return distance -- fazendo isso para garantir que a imagem não se forme atrás do plano da câmera
 end
 
 local distance = sdf(point)
-print(distance)
 local color = Color(point)

@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from helpers import *
 import copy
+import math
 
 
 reserved_words = ["print", "if", "while"]
@@ -250,6 +251,21 @@ class Print(Node):
         value = self.children.Evaluate(table)
         print(value[0])
 
+class Sin(Node):
+    def Evaluate(self,table):
+        value =  self.children.Evaluate(table)
+        return (math.sin(value[0]),"float")
+
+class Cos(Node):
+    def Evaluate(self,table):
+        value = self.children.Evaluate(table)
+        return (math.cos(value[0]),"float")
+
+class Tan(Node):
+    def Evaluate(self,table):
+        value = self.children.Evaluate(table)
+        return (math.tan(value[0]),"float")
+
 
 class While(Node):
 
@@ -381,6 +397,8 @@ class Parser:
                     return Vec3Val(elements[0], elements[1], elements[2])
                 elif vector_size == 4:
                     return Vec4Val(elements[0], elements[1], elements[2], elements[3])
+            
+
 
             self.tokenizer.select_next()
             if self.tokenizer.next.type == DOT:
@@ -390,17 +408,39 @@ class Parser:
                     self.tokenizer.select_next()
                     return PropertyAccess(Identifier(next.value, None), property_name)
             elif self.tokenizer.next.type == OPEN_PAR:  # CHAMADA DE FUNCAO COM RETORNO DE VALOR
-                args = []  # primeiro filho vai ser o identificador da funcao
-                self.tokenizer.select_next()
-                if self.tokenizer.next.type != CLOSE_PAR:
-                    args.append(self.parse_expression())
-                    while self.tokenizer.next.type == COMMA:
-                        self.tokenizer.select_next()
+                if next.value == "sin":
+                    self.tokenizer.select_next() #consumindo parentesis
+                    expression = self.bool_expression()
+                    if self.tokenizer.next.type != CLOSE_PAR:
+                        raise SyntaxError("Expecting closing parenthesis after function arguments")
+                    self.tokenizer.select_next()
+                    return Sin(None,expression)
+                elif next.value == "cos":
+                    self.tokenizer.select_next() #consumindo parentesis
+                    expression = self.bool_expression()
+                    if self.tokenizer.next.type != CLOSE_PAR:
+                        raise SyntaxError("Expecting closing parenthesis after function arguments")
+                    self.tokenizer.select_next()
+                    return Cos(None,expression) 
+                elif next.value == "tan":
+                    self.tokenizer.select_next() #consumindo parentesis
+                    expression = self.bool_expression()
+                    if self.tokenizer.next.type != CLOSE_PAR:
+                        raise SyntaxError("Expecting closing parenthesis after function arguments")
+                    self.tokenizer.select_next()
+                    return Tan(None,expression)
+                else:
+                    args = []
+                    self.tokenizer.select_next()
+                    if self.tokenizer.next.type != CLOSE_PAR:
                         args.append(self.parse_expression())
-                if self.tokenizer.next.type != CLOSE_PAR:
-                    raise SyntaxError("Expecting closing parenthesis after function arguments")
-                self.tokenizer.select_next()
-                return FuncCall(next.value, args)
+                        while self.tokenizer.next.type == COMMA:
+                            self.tokenizer.select_next()
+                            args.append(self.parse_expression())
+                    if self.tokenizer.next.type != CLOSE_PAR:
+                        raise SyntaxError("Expecting closing parenthesis after function arguments")
+                    self.tokenizer.select_next()
+                    return FuncCall(next.value, args)
             else:
                 return Identifier(next.value, None)
 
@@ -684,6 +724,7 @@ class Parser:
                 return self.call_funcDec()
             elif ident == "return":
                 return self.call_return()
+            
             elif (
                 ident == "local"
             ):  # se local, proximo ident tem que ser um nome de variavel
