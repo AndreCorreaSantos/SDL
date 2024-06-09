@@ -14,6 +14,7 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 %%
 
 {WS}                     ;
+"\n"                    { return NEWLINE; }
 "#"                      { return PROGRAM_START; }
 "in"                     { return IN; }
 "out"                    { return OUT; }
@@ -21,7 +22,7 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 "width"                  { return WIDTH; }
 "height"                 { return HEIGHT; }
 "steps"                  { return STEPS; }
-"def"                   { return FUNC; }
+"function"                   { return FUNC; }
 "local"                  { return LOCAL; }
 "while"                  { return WHILE; }
 "if"                     { return IF; }
@@ -53,6 +54,5 @@ PROPERTY \.[a-zA-Z_][a-zA-Z0-9_]*
 {IDENT}                  { return IDENTIFIER; }
 {NUMBER}                 { return FLOAT; }
 {PROPERTY}               { return PROPERTY; }
-"\\n"                    { return NEWLINE; }
 
 %%

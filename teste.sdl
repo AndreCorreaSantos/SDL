@@ -1,1 +1,15 @@
 #in vec3 point, out vec3 color, out float distance, opt width 5
+
+local teste
+
+local teste2 = 1.0
+
+while 1.0 > 2.0 do
+
+local teste = 1.0
+end
+
+
+if 1.0 > 2.0 then
+local teste = 1.0
+end

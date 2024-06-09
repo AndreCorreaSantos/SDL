@@ -22,15 +22,15 @@ void yyerror(char *s);
 %%
 
 program
-    : newlines PROGRAM_START program_args newlines
+    : PROGRAM_START program_args block
     ;
 
 
-newlines
+/* newlines
     : NEWLINE newlines
     | NEWLINE
-    | 
-    ;
+    |
+    ; */
 
 program_args
     : IN arg COMMA program_args
@@ -51,8 +51,29 @@ arg
     : TYPE IDENTIFIER
     ; 
 
+block
+    : statement block
+    | statement
+    ;
+
+statement
+    :
+    | dec_assign_statement
+    | while_statement
+    | if_statement
+    | return_statement
+    ;
+
+
+dec_assign_statement
+    : LOCAL IDENTIFIER
+    | LOCAL IDENTIFIER ASSIGN bool_exp
+    | IDENTIFIER ASSIGN bool_exp
+    ;
+
+
 function
-    : FUNC IDENTIFIER LPAREN func_args RPAREN LBRACE block RBRACE
+    : FUNC IDENTIFIER LPAREN func_args RPAREN block END
     ;
 
 func_args
@@ -71,31 +92,6 @@ func_arg
     : TYPE IDENTIFIER
     ;
 
-block
-    : newlines statement block
-    | 
-    ;
-
-statement
-    : assignment_statement newlines
-    | declaration_statement newlines
-    | declaration_assign newlines
-    | while_statement newlines
-    | if_statement newlines
-    | return_statement newlines
-    ;
-
-assignment_statement
-    : IDENTIFIER ASSIGN bool_exp
-    ;
-
-declaration_statement
-    : LOCAL IDENTIFIER
-    ;
-
-declaration_assign
-    : LOCAL IDENTIFIER ASSIGN bool_exp
-    ;
 
 while_statement
     : WHILE bool_exp DO block END

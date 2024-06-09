@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Introdução}{3}{0}{1}
+\beamer@sectionintoc {2}{Motivação}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{Motivação para criar a linguagem}{4}{0}{2}
+\beamer@subsectionintoc {2}{2}{Solução}{6}{0}{2}
+\beamer@sectionintoc {3}{Renderizando SDFs}{7}{0}{3}
+\beamer@sectionintoc {4}{Renderizando SDFs}{8}{0}{4}
+\beamer@sectionintoc {5}{Exemplos}{11}{0}{5}
