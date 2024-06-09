@@ -31,7 +31,7 @@ function abs(v)
 end
 
 function distance(p1, p2)
-    return ((p1.x - p2.x)^2 + (p1.y - p2.y)^2 + (p1.z - p2.z)^2)^0.5
+    return ((p1.x - p2.x)^2.0 + (p1.y - p2.y)^2.0 + (p1.z - p2.z)^2.0)^0.5
 end
 
 
@@ -50,6 +50,7 @@ function SignedDistance(p)
 end
 
 function Color(p)
+    print(p)
     return vec3(0.0, 0.0, 1.0) 
 end
 
