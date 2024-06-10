@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1717958400 "/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex" "apresentacao.pdf" "apresentacao" 1717958402
+["pdflatex"] 1717958424 "/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex" "apresentacao.pdf" "apresentacao" 1717958426
   "/etc/texmf/web2c/texmf.cnf" 1685098809 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex" 1717958400 14142 32c2a93afce31195dbaa5b8aeeaf8810 ""
+  "/home/andre/Insper/7semestre/sdl/apresentacao/apresentacao.tex" 1717958424 14038 ebc0dcb9695a50bf6e3030093d8295d2 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr10.tfm" 1136768653 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmss10.tfm" 1136768653 1316 b636689f1933f24d1294acdf6041daaa ""
@@ -189,11 +189,11 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1708197962 165012 f177baa1c39a3ebd62c3096a43521a0d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1711292296 1436022 6ba27dbb1b5c2f8dcf503da2e15b201a ""
-  "apresentacao.aux" 1717958402 8866 bc87e15adbd09d52045f11160fef5505 "pdflatex"
-  "apresentacao.nav" 1717958402 3051 bf2b0358994ba6684645f3edf0e5c44b "pdflatex"
-  "apresentacao.out" 1717958402 871 575d5b2076e05b02ceb30ba3f270c9cd "pdflatex"
-  "apresentacao.tex" 1717958400 14142 32c2a93afce31195dbaa5b8aeeaf8810 ""
-  "apresentacao.toc" 1717958402 373 82af003de0184f511047d2a900959bf6 "pdflatex"
+  "apresentacao.aux" 1717958425 8866 bc87e15adbd09d52045f11160fef5505 "pdflatex"
+  "apresentacao.nav" 1717958425 3051 bf2b0358994ba6684645f3edf0e5c44b "pdflatex"
+  "apresentacao.out" 1717958425 871 575d5b2076e05b02ceb30ba3f270c9cd "pdflatex"
+  "apresentacao.tex" 1717958424 14038 ebc0dcb9695a50bf6e3030093d8295d2 ""
+  "apresentacao.toc" 1717958425 373 82af003de0184f511047d2a900959bf6 "pdflatex"
   "imgs/SDF.png" 1717889111 201084 4497c67dd12bbd60f3770ab2dd265dae ""
   "imgs/canvas.png" 1717955825 12391 877ae8d3e2297e27ed93d84ea9c06e4a ""
   "imgs/cube.png" 1717903334 698 b71c998903f3a021ecd889e3c055b61f ""
